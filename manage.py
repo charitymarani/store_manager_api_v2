@@ -20,7 +20,6 @@ class DbSetup():
         queries = self.tables()
         for query in queries:
             curr.execute(query)
-        print('created')
         conn.commit()
         curr.close()
         conn.close()
@@ -32,7 +31,6 @@ class DbSetup():
                 VALUES(%s,%s,%s,%s,%s);"
                 
         curr.execute(query,('Charity','defaultadmin','admin@gmail.com',pwh,'admin'))
-        print("created default admin")
         conn.commit()
         curr.close()
         conn.close()
