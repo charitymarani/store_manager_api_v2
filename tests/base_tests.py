@@ -9,10 +9,13 @@ class BaseTestCase(TestCase):
     def setUp(self):
         self.app = create_app(config='testing')
         self.manage = DbSetup(config_name='testing')
-        self.manage.create_tables()
-        self.manage.create_default_admin()
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
+        with self.app_context:
+            
+            self.manage.create_tables()
+            self.manage.create_default_admin()
+            
         
         
 
@@ -34,7 +37,8 @@ class BaseTestCase(TestCase):
                                  )
     def tearDown(self):
         """removes the db and the context"""
-        self.manage.drop_tables()     
+        with self.app_context:
+            self.manage.drop_tables()     
 
     
 
