@@ -1,36 +1,42 @@
+
 import json
-from .base_tests import BaseTestCase
+from tests.base_tests import BaseTestCase
 
 
-class TestAuth(BaseTestCase):
+class TestAuthentication(BaseTestCase):
 
     def test_registration(self):
-
-        # Test successful registration
-        response = self.client.post(
-            '/api/v1/auth/register',
-            data=json.dumps(self.register_data),
-            content_type='application/json'
-        )
-        response_data = json.loads(response.data)
-        self.assertEqual(
-            "User with username amina added successfully", response_data["message"])
-        self.assertEqual(response.status_code, 201)
+        with self.client:
+            
+            # Test register
+            response = self.client.post(
+                self.signupurl,
+                data=json.dumps(self.register_data),
+                content_type='application/json'
+            )
+            response_data1 = json.loads(response.data)
+            self.assertEqual(
+                "Welcome amina!", response_data1["message"])
+            self.assertEqual(response.status_code, 201)
 
     def test_user_login(self):
+        with self.client:
+            # Register a user
+            self.client.post(
+                self.signupurl,
+                data=json.dumps(self.register_data),
+                content_type='application/json'
+            )
+            # Test for successful Login
+            response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.login_data),
+                content_type='application/json'
+            )
+            response_data1 = json.loads(response.data)
+            self.assertEqual(
+                "Login successful!Welcome back,amina!", response_data1["message"])
+            self.assertEqual(response.status_code, 200)
 
-        # Register a user
-        self.client.post(
-            '/api/v1/auth/register',
-            data=json.dumps(self.register_data),
-            content_type='application/json'
-        )
-        # Test for successful Login
-        response = self.client.post(
-            '/api/v1/auth/login',
-            data=json.dumps(self.login_data),
-            content_type='application/json'
-        )
-        response_data = json.loads(response.data)
-        self.assertEqual("Login successful!", response_data["message"])
-        self.assertEqual(response.status_code, 200)
+     
+

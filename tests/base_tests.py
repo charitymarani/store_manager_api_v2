@@ -1,10 +1,21 @@
 from unittest import TestCase
+from application import create_app
+from manage import DbSetup
+from instance.config import app_config
 
 
 class BaseTestCase(TestCase):
 
     def setUp(self):
+        self.app = create_app('testing')
+        self.manage = DbSetup()
+        self.manage.create_tables()
+        self.manage.create_default_admin()
+        self.client = self.app.test_client()
+        self.app_context = self.app.app_context()
 
+        self.signupurl='/api/v2/register'
+        self.loginurl='/api/v2/login'
         self.register_data = dict(
             name='charity marani',
             email='amina@gmail.com',
@@ -16,11 +27,12 @@ class BaseTestCase(TestCase):
         self.login_data = dict(username='amina',
                                password='1234'
                                )
-        self.product_data = dict(product_id='100',
-                                 name='heels',
-                                 category='shoes',
-                                 quantity='50',
-                                 description=' a shoe with raisedd heel')
+        self.default_login = dict(username='defaultadmin',
+                                  password='1234@admin'
+                                  )
 
     def tearDown(self):
-        pass
+        """removes the db and the context"""
+        self.manage.drop_tables()
+
+    
