@@ -13,7 +13,7 @@ before_script:
 - createdb test_store_db
  
 script:	
- - nosetests tests --with-coverage 
+ - nosetests tests/test_authentication.py --with-coverage 
 after_success:
  - coveralls
  - codeclimate-test-reporter
