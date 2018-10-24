@@ -14,17 +14,6 @@ class DbSetup():
         self.connection = psycopg2.connect(self.connection_string)
         
 
-
-    # def connection(self):
-    #     ''' db connection method'''
-    #     db_name = getenv('DB_NAME')
-    #     db_user = getenv('DB_USER')
-    #     db_password = getenv('DB_PASSWORD')
-    #     db_host = getenv('DB_HOST')
-    #     con = psycopg2.connect(
-    #         dbname=db_name, host=db_host, port=5432, user=db_user,  password=db_password)
-    #     return con
-
     def create_tables(self):
         conn = psycopg2.connect(self.connection_string)
         curr = conn.cursor()
@@ -40,9 +29,7 @@ class DbSetup():
         curr=conn.cursor(cursor_factory=RealDictCursor)
         pwh=generate_password_hash('1234admin')
         query="INSERT INTO users(name, username, email, password,role)\
-                VALUES(%s,%s,%s,%s,%s)\
-                ON CONFLICT (username)\
-                DO NOTHING;"
+                VALUES(%s,%s,%s,%s,%s);"
                 
         curr.execute(query,('Charity','defaultadmin','admin@gmail.com',pwh,'admin'))
         print("created default admin")
