@@ -28,9 +28,7 @@ class DbSetup():
         curr=conn.cursor(cursor_factory=RealDictCursor)
         pwh=generate_password_hash('1234admin')
         query="INSERT INTO users(name, username, email, password,role)\
-                VALUES(%s,%s,%s,%s,%s)\
-                on CONFLICT (username)\
-                DO NOTHING;"
+                VALUES(%s,%s,%s,%s,%s);"
                 
         curr.execute(query,('Charity','defaultadmin','admin@gmail.com',pwh,'admin'))
         conn.commit()
@@ -79,7 +77,7 @@ class DbSetup():
         query2 = """CREATE TABLE IF NOT EXISTS users (
             user_id serial PRIMARY KEY NOT NULL,
             name varchar(20) NOT NULL,
-            username varchar(20) UNIQUE NOT NULL,
+            username varchar(20) NOT NULL,
             email varchar(100) NOT NULL,
             role varchar(20) NOT NULL,
             password varchar(300) NOT NULL,
