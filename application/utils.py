@@ -1,12 +1,12 @@
 from manage import DbSetup
 
-conn = DbSetup("testing")
+conn = DbSetup("development")
 cur = conn.cursor()
 
 
-def list_iterator(list):
-    for i in list:
-        if i is None or not i:
+def list_iterator(list_):
+    for listitem in list_:
+        if listitem is None or not listitem:
             return False
 
 
