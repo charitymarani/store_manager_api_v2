@@ -28,7 +28,9 @@ class DbSetup():
         curr=conn.cursor(cursor_factory=RealDictCursor)
         pwh=generate_password_hash('1234admin')
         query="INSERT INTO users(name, username, email, password,role)\
-                VALUES(%s,%s,%s,%s,%s);"
+                VALUES(%s,%s,%s,%s,%s)\
+                ON CONFLICT (username)\
+                DO NOTHING;"
                 
         curr.execute(query,('Charity','defaultadmin','admin@gmail.com',pwh,'admin'))
         conn.commit()
