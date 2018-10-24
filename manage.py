@@ -47,7 +47,6 @@ class DbSetup():
         queries = [table1, table2, table3, table4]
         for query in queries:
             curr.execute(query)
-        print("dropped")
         conn.commit()
         curr.close()
         conn.close()
