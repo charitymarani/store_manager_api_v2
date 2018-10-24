@@ -1,6 +1,6 @@
 
 import json
-from tests.base_tests import BaseTestCase
+from .base_tests import BaseTestCase
 
 
 class TestAuthentication(BaseTestCase):
