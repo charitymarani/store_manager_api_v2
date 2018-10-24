@@ -10,6 +10,7 @@ services:
  - postgresql
 before_script:
  - createdb test_store_db
+ - createdb store_manager
 script:	
  - nosetests tests --with-coverage 
 after_success:
