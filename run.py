@@ -14,7 +14,7 @@ def home():
     '''method for home page'''
     return "<h2>Welcome to store manager api version 2</h2>"
 
-db = DbSetup()
+db = DbSetup(CONFIG_NAME)
 if __name__ == "__main__":
     db.create_tables()
     db.create_default_admin()

@@ -1,31 +1,28 @@
 
 '''instance/config.py'''
 import os
+
+
 class Config(object):
     '''parent config file'''
     DEBUG = True
     SECRET_KEY = os.urandom(24)
-  
+
 
 class Development(Config):
     '''Configurations for development'''
     DEBUG = True
-    os.environ['DB_NAME'] = 'store_manager'
-    os.environ['DB_USER'] = 'postgres'
-    os.environ['DB_PASSWORD'] = 'chacha'
-    os.environ['DB_HOST'] = 'localhost'
+    CONNECTION_STRING = "dbname = 'store_manager' host = 'localhost' user = 'postgres' port = 5432 password = 'chacha'"
 
 
 class Testing(Config):
     '''configurations for testing with a separate test database'''
     TESTING = True
     DEBUG = True
-    os.environ['DB_NAME'] = 'test_store_db'
-    os.environ['DB_USER'] = 'postgres'
-    os.environ['DB_PASSWORD'] = 'chacha'
-    os.environ['DB_HOST'] = 'localhost'
+    CONNECTION_STRING = "dbname = 'test_store_db' host = 'localhost' user = 'postgres' port = 5432 password = 'chacha'"
+
 
 app_config = {
-    'development' : Development,
-    'testing' : Testing
+    'development': Development,
+    'testing': Testing
 }

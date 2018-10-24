@@ -15,7 +15,7 @@ user_object = user_model.User()
 
 
 @auth.route('/register', methods=['POST'])
-
+@jwt_required
 def register():
     '''endpoint to add  a new user'''
     data = request.get_json()
@@ -45,7 +45,9 @@ def register():
     if match is None:
         return jsonify({"message": "Enter a valid email address"}), 403
     claims=get_jwt_claims()
-    
+    admin="admin"
+    if claims["role"] != admin:
+        return jsonify({"message":"Only an admin can add new users!"}),401
     response = jsonify(user_object.put(name, username, email, password, role))
     response.status_code = 201
     return response

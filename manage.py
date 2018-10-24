@@ -3,23 +3,30 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from flask import Flask
 from werkzeug.security import generate_password_hash
+from instance.config import app_config
 
 
 class DbSetup():
-    '''set up database actions'''
+    '''class to setup db connection'''
+    def __init__(self, config_name):
+        #create connection to database
+        self.connection_string = app_config[config_name].CONNECTION_STRING
+        self.connection = psycopg2.connect(self.connection_string)
+        
 
-    def connection(self):
-        ''' db connection method'''
-        db_name = getenv('DB_NAME')
-        db_user = getenv('DB_USER')
-        db_password = getenv('DB_PASSWORD')
-        db_host = getenv('DB_HOST')
-        con = psycopg2.connect(
-            dbname=db_name, host=db_host, port=5432, user=db_user,  password=db_password)
-        return con
+
+    # def connection(self):
+    #     ''' db connection method'''
+    #     db_name = getenv('DB_NAME')
+    #     db_user = getenv('DB_USER')
+    #     db_password = getenv('DB_PASSWORD')
+    #     db_host = getenv('DB_HOST')
+    #     con = psycopg2.connect(
+    #         dbname=db_name, host=db_host, port=5432, user=db_user,  password=db_password)
+    #     return con
 
     def create_tables(self):
-        conn = self.connection()
+        conn = psycopg2.connect(self.connection_string)
         curr = conn.cursor()
         queries = self.tables()
         for query in queries:
@@ -29,9 +36,9 @@ class DbSetup():
         curr.close()
         conn.close()
     def create_default_admin(self):
-        conn=self.connection()
+        conn=psycopg2.connect(self.connection_string)
         curr=conn.cursor(cursor_factory=RealDictCursor)
-        pwh=generate_password_hash("1234@admin")
+        pwh=generate_password_hash('1234admin')
         query="INSERT INTO users(name, username, email, password,role)\
                 VALUES(%s,%s,%s,%s,%s)\
                 ON CONFLICT (username)\
@@ -50,7 +57,7 @@ class DbSetup():
         t3 = """DROP TABLE IF EXISTS users CASCADE"""
         t4 = """DROP TABLE IF EXISTS blacklist CASCADE"""
 
-        conn = self.connection()
+        conn = psycopg2.connect(self.connection_string)
         curr = conn.cursor()
         queries = [t1, t2, t3, t4]
         for query in queries:
@@ -62,12 +69,12 @@ class DbSetup():
 
     def cursor(self):
         '''method to allow objects execute SQL querries on the db instance'''
-        cur = self.connection().cursor(cursor_factory=RealDictCursor)
+        cur = self.connection.cursor(cursor_factory=RealDictCursor)
         return cur
 
     def commit(self):
         '''commits changes to db'''
-        conn = self.connection()
+        conn = psycopg2.connect(self.connection_string)
         conn.commit()
 
     def tables(self):
