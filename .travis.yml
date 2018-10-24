@@ -1,11 +1,11 @@
 anguage: python	
 python:	
- - "3.6"	
+ - "3.5.2"
 cache: pip	
 install:	
- - pip3 install -r requirements.txt
- - pip3 install coveralls
- - pip3 install codeclimate-test-reporter
+ - pip install -r requirements.txt
+ - pip install coveralls
+ - pip install codeclimate-test-reporter
 
 script:	
  - nosetests tests --with-coverage 
