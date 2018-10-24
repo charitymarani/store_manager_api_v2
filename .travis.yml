@@ -9,7 +9,6 @@ install:
 services:
  - postgresql
 before_script:
-- createdb store_manager
 - createdb test_store_db
  
 script:	
