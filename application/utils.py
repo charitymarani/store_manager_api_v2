@@ -1,6 +1,6 @@
 from manage import DbSetup
 
-conn = DbSetup("development")
+conn = DbSetup("testing")
 cur = conn.cursor()
 
 
