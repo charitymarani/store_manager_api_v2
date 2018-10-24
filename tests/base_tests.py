@@ -31,7 +31,10 @@ class BaseTestCase(TestCase):
                                )
         self.default_login = dict(username='defaultadmin',
                                   password='1234admin'
-                                  )
+                                 )
+    def tearDown(self):
+        """removes the db and the context"""
+        self.manage.drop_tables()     
 
     
 
