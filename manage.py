@@ -29,7 +29,7 @@ class DbSetup():
         pwh=generate_password_hash('1234admin')
         query="INSERT INTO users(name, username, email, password,role)\
                 VALUES(%s,%s,%s,%s,%s)\
-                ON CONFLICT (username)\
+                on CONFLICT (username)\
                 DO NOTHING;"
                 
         curr.execute(query,('Charity','defaultadmin','admin@gmail.com',pwh,'admin'))
