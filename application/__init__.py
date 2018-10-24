@@ -33,7 +33,6 @@ def create_app(config):
     @jwt.user_identity_loader
     def user_identity_lookup(user_object):
         '''set token identity from user_object passed to username'''
-        print(user_object)
         return user_object["username"]
 
     @jwt.token_in_blacklist_loader
