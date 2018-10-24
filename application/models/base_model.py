@@ -5,7 +5,7 @@ from psycopg2.extras import RealDictCursor
 from instance.config import app_config
 from manage import DbSetup
 
-CONFIG="development"
+CONFIG="testing"
 CONN_STRING = app_config[CONFIG].CONNECTION_STRING
 
 class BaseModel(object):
