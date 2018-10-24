@@ -9,7 +9,7 @@ install:
 services:
  - postgresql
 before_script:
-- createdb test_store_db
+- psql -c 'create database test_store_db;' -U postgres
 - createdb store_manager
  
 script:	
