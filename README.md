@@ -50,3 +50,11 @@ Run the app, and your ready to go!
 python run.py
 
 ```
+### Running the tests
+The tests have beene written using the python module unittests. The path to tests folder is `tests` . Use a test framework like nose to run the tests.
+To run the tests use the command:
+
+```
+nosetests tests
+
+```
