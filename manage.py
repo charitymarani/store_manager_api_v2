@@ -39,14 +39,14 @@ class DbSetup():
     
 
     def drop_tables(self):
-        t1 = """DROP TABLE IF EXISTS products CASCADE"""
-        t2 = """DROP TABLE IF EXISTS sales CASCADE"""
-        t3 = """DROP TABLE IF EXISTS users CASCADE"""
-        t4 = """DROP TABLE IF EXISTS blacklist CASCADE"""
+        table1 = """DROP TABLE IF EXISTS products CASCADE"""
+        table2 = """DROP TABLE IF EXISTS sales CASCADE"""
+        table3 = """DROP TABLE IF EXISTS users CASCADE"""
+        table4 = """DROP TABLE IF EXISTS blacklist CASCADE"""
 
         conn = psycopg2.connect(self.connection_string)
         curr = conn.cursor()
-        queries = [t1, t2, t3, t4]
+        queries = [table1, table2, table3, table4]
         for query in queries:
             curr.execute(query)
         print("dropped")
@@ -66,7 +66,7 @@ class DbSetup():
 
     def tables(self):
 
-        q1 = """CREATE TABLE IF NOT EXISTS products (
+        query1 = """CREATE TABLE IF NOT EXISTS products (
             product_id integer PRIMARY KEY,
             name varchar(20) NOT NULL,
             purchase_price integer,
@@ -77,7 +77,7 @@ class DbSetup():
             description varchar(20),
             date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
             """
-        q2 = """CREATE TABLE IF NOT EXISTS users (
+        query2 = """CREATE TABLE IF NOT EXISTS users (
             user_id serial PRIMARY KEY NOT NULL,
             name varchar(20) NOT NULL,
             username varchar(20) UNIQUE NOT NULL,
@@ -86,7 +86,7 @@ class DbSetup():
             password varchar(300) NOT NULL,
             date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
             """
-        q3 = """CREATE TABLE IF NOT EXISTS sales (
+        query3 = """CREATE TABLE IF NOT EXISTS sales (
             sale_id serial PRIMARY KEY NOT NULL,
             items varchar(20) NOT NULL,
             items_count integer NOT NULL,
@@ -94,8 +94,8 @@ class DbSetup():
             created_by varchar(20) NOT NULL,
             date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
             """
-        q4 = '''CREATE TABLE IF NOT EXISTS blacklist(
+        query4 = '''CREATE TABLE IF NOT EXISTS blacklist(
                     token_id SERIAL PRIMARY KEY NOT NULL,
                     json_token_identifier   VARCHAR(500) NOT NULL)'''
-        queries = [q1, q2, q3, q4]
+        queries = [query1, query2, query3, query4]
         return queries
