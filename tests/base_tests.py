@@ -10,7 +10,7 @@ class BaseTestCase(TestCase):
         self.app = create_app(config='testing')
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
-        self.manage = DbSetup('testing')
+        self.manage = DbSetup(config_name='testing')
         self.manage.create_tables()
         self.manage.create_default_admin()
         
