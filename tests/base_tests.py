@@ -11,7 +11,6 @@ class BaseTestCase(TestCase):
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.manage = DbSetup('testing')
-        self.manage.drop_tables()
         self.manage.create_tables()
         self.manage.create_default_admin()
         
