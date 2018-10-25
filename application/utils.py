@@ -1,5 +1,6 @@
 import os
 from manage import DbSetup
+from instance.config import app_config
 
 CURRENT_ENVIRONMENT = os.environ['ENV']
 CONN_STRING = app_config[CURRENT_ENVIRONMENT].CONNECTION_STRING
