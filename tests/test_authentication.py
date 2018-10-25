@@ -107,7 +107,7 @@ class TestAuthentication(BaseTestCase):
                     name='charity marani',
                     email='hez@gmail.com',
                     role='attendant',
-                    username='amina',
+                    username='rodda',
                     password='1234',
                     confirm_password='1234'
                 )),
