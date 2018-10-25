@@ -29,7 +29,22 @@ class DbSetup(object):
         conn.commit()
         curr.close()
         conn.close()
+        
+    def drop_tables(self):
+        t1="""DROP TABLE IF EXISTS products CASCADE"""
+        t2="""DROP TABLE IF EXISTS sales CASCADE"""
+        t3="""DROP TABLE IF EXISTS users CASCADE"""
+        t4="""DROP TABLE IF EXISTS blacklist CASCADE"""
 
+        conn=self.connection(url)
+        curr=conn.cursor()
+        queries=[t1,t2,t3,t4]
+        for query in queries:
+            curr.execute(query)
+        print("Dropped tables")
+        conn.commit()
+        curr.close()
+        conn.close()
     def create_default_admin(self):
         conn =self.connection(url)
         curr = conn.cursor(cursor_factory=RealDictCursor)
