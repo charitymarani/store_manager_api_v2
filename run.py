@@ -14,6 +14,5 @@ def home():
     '''method for home page'''
     return "<h2>Welcome to store manager api version 2</h2>"
 
-db = DbSetup(CONFIG_NAME)
 if __name__ == "__main__":
     app.run()
