@@ -1,4 +1,5 @@
 import os
+import psycopg2
 from manage import DbSetup
 from instance.config import app_config
 
