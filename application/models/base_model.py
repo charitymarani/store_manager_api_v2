@@ -5,8 +5,8 @@ from psycopg2.extras import RealDictCursor
 from instance.config import app_config
 from manage import DbSetup
 
-CONFIG = "development"
-CONN_STRING = app_config[CONFIG].CONNECTION_STRING
+CURRENT_ENVIRONMENT = os.environ['ENV']
+CONN_STRING = app_config[CURRENT_ENVIRONMENT].CONNECTION_STRING
 
 class BaseModel(object):
 
