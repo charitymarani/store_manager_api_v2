@@ -8,14 +8,9 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         self.app = create_app(config='testing')
-        self.manage = DbSetup(config_name='testing')
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
-        with self.app_context:
-            
-            self.manage.create_tables()
-            self.manage.create_default_admin()
-            
+        
         
         
 
@@ -37,8 +32,9 @@ class BaseTestCase(TestCase):
                                  )
     def tearDown(self):
         """removes the db and the context"""
-        with self.app_context:
-            self.manage.drop_tables()     
+        current_environemt = os.environ['ENV']
+        db=DbSetup(current_environment)
+        db.drop_tables()
 
     
 
