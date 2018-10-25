@@ -16,6 +16,4 @@ def home():
 
 db = DbSetup(CONFIG_NAME)
 if __name__ == "__main__":
-    db.create_tables()
-    db.create_default_admin()
     app.run()
