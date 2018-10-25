@@ -9,9 +9,9 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         self.app = create_app(config='testing')
-        self.db = DbSetup('testing')
+        
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
+       
         
         
         
@@ -34,8 +34,7 @@ class BaseTestCase(TestCase):
                                  )
     def tearDown(self):
         """removes the db and the context"""
-        
-        
+        self.db=DbSetup(config_name='testing')
         self.db.drop_tables()
 
     
