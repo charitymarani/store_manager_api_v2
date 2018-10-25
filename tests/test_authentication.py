@@ -223,3 +223,77 @@ class TestAuthentication(Testbase):
             response_data5 = json.loads(response5.data)
             self.assertEqual(
                 "Username does not exist in our records", response_data5["message"])
+    def test_user_logout(self):
+        with self.client:
+            # login default admin
+            login = self.client.post(self.loginurl,
+                                     data=json.dumps(self.default_login),
+                                     content_type='application/json')
+            resp = json.loads(login.data.decode())
+            token = resp["token"]
+            self.assertEqual(login.status_code, 200)
+            # Register a user
+            self.client.post(
+                self.signupurl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.register_data),
+                content_type='application/json'
+            )
+            # successful Login
+            response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.login_data),
+                content_type='application/json'
+            )
+            response_data1 = json.loads(response.data)
+            token1=response_data1["token"]
+            response2 = self.client.post(self.logouturl,headers=dict(Authorization="Bearer " + token1))
+            response_data2 = json.loads(response2.data)
+            self.assertEqual("Successfully logged out",
+                             response_data2["message"])
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_all_users(self):
+        with self.client:
+            # login default admin
+            login = self.client.post(self.loginurl,
+                                     data=json.dumps(self.default_login),
+                                     content_type='application/json')
+            resp = json.loads(login.data.decode())
+            token = resp["token"]
+            self.assertEqual(login.status_code, 200)
+            # Register a user
+            self.client.post(
+                self.signupurl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.register_data),
+                content_type='application/json'
+            )
+            result = self.client.get(self.allusersurl)
+            self.assertEqual(result.status_code, 200)
+
+    def test_empty_users_list(self):
+            result = self.client.get(self.allusersurl)
+            result_data = json.loads(result.data)
+            self.assertEqual("There are no records", result_data["message"])
+
+    def test_get_user_by_username(self):
+        with self.client:
+            # login default admin
+            login = self.client.post(self.loginurl,
+                                     data=json.dumps(self.default_login),
+                                     content_type='application/json')
+            resp = json.loads(login.data.decode())
+            token = resp["token"]
+            self.assertEqual(login.status_code, 200)
+            # Register a user
+            self.client.post(
+                self.signupurl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.register_data),
+                content_type='application/json'
+            )
+            result = self.client.get(self.allusersurl+'/rodda')
+            self.assertEqual(result.status_code, 200)
+            # Test user by noexistent username
+            result2 = self.client.get(self.allusersurl+'/amos')
+            resp = json.loads(result2.data)
+            self.assertEqual(
+                "username does not exist in our records", resp["message"])
