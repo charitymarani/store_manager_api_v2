@@ -11,7 +11,11 @@ from .views.user_endpoints import auth
 
 def create_app(config):
     '''function configuring the Flask App'''
+    os.environ["ENV"] = config
     from .models.blacklist_model import RevokedTokens
+    
+    my_db = SetupDB(config)
+    my_db.create_tables()
     
     app = Flask(__name__)
     CORS(app)
