@@ -53,7 +53,7 @@ class Testbase(unittest.TestCase):
                                   password='1234admin'
                                   )
         self.productdata = dict(
-            product_id=502,
+            product_id=504,
             name='chunky heels',
             category='shoes',
             purchase_price=1000,

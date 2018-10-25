@@ -118,3 +118,24 @@ class TestProducts(Testbase):
             response = self.client.get(
                 self.producturl, headers=dict(Authorization="Bearer " + token))
             self.assertEqual(response.status_code, 200)
+    def test_get_product_by_id(self):
+        with self.client:
+            # login default admin
+            login_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.default_login),
+                content_type='application/json'
+            )
+            result = json.loads(login_response.data)
+        
+            token = result["token"]
+            
+            #Test successful get product by id
+            response = self.client.get(
+                self.producturl+'/504',headers=dict(Authorization="Bearer " + token))
+            self.assertEqual(response.status_code, 200)
+            #Test get product that doesn't exist
+            response1 = self.client.get(
+                self.producturl+'/700',headers=dict(Authorization="Bearer " + token))
+            resp=json.loads(response1.data)
+            self.assertEqual("product_id does not exist in our records",resp["message"])

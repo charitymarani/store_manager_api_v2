@@ -23,5 +23,8 @@ class Products(BaseModel):
     def get_all_products(self):
         '''get all products'''
         result=self.select_no_condition('products','product_id')
-        
+        return result
+    def get_product_by_id(self,product_id):
+        '''get single product'''
+        result = self.select_with_condition('products', 'product_id', product_id)
         return result
