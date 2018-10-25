@@ -73,5 +73,48 @@ class TestSales(Testbase):
             response_datae = json.loads(responsee.data)
             self.assertEqual("Items_count and total_amount fields can't be empty",response_datae["message"])
             self.assertEqual(responsee.status_code, 206)
+    def test_get_all_sales(self):       
+        '''Only an admin can view all sales records'''
+        with self.client:
+            # login default admin
+            login_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.default_login),
+                content_type='application/json'
+            )
+            result = json.loads(login_response.data)
+        
+            token = result["token"]
+            # Register attendant
+            self.client.post(
+                self.signupurl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.register_data2),
+                content_type='application/json'
+            )
+
+            # Login attendant
+            login_att_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.login_data2),
+                content_type='application/json'
+            )
+            resultatt = json.loads(login_att_response.data)
+            tokenatt = resultatt["token"]
+           
+            
+            #let attendant post a sale
+            self.client.post(
+                self.salesurl,headers=dict(Authorization="Bearer " + tokenatt),
+                data=json.dumps(self.sales_data1),
+                content_type='application/json'
+            )
+            #Let admin get all sales
+            response=self.client.get(self.salesurl,headers=dict(Authorization="Bearer " + token))
+            self.assertEqual(response.status_code,200)
+            #Test attendant is not allowed to view all sales
+            responseb=self.client.get(self.salesurl,headers=dict(Authorization="Bearer " + tokenatt))
+            responseb_data=json.loads(responseb.data)
+            self.assertEqual("Only an admin can view all sales records",responseb_data["message"])
+            self.assertEqual(responseb.status_code,401)
 
 

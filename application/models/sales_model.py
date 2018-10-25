@@ -8,3 +8,7 @@ class Sales(BaseModel):
         self.cursor.execute(query, (created_by,items,items_count,price))
         self.conn.commit()
         return dict(response=dict(message="A sale has been created successfully"), status_code=201)
+    def get_all_sales(self):
+        '''get all sales'''
+        result=self.select_no_condition('sales','sale_id')
+        return result
