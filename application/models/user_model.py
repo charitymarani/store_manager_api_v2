@@ -1,7 +1,7 @@
 '''/models.usermodel.py'''
 from werkzeug.security import generate_password_hash, check_password_hash
 from .base_model import BaseModel
-from ..utils import select_with_condition, select_no_condition
+# from ..utils import select_with_condition, select_no_condition
 
 
 class User(BaseModel):
@@ -10,12 +10,12 @@ class User(BaseModel):
     def put(self, name, username, email, password, role):
         '''Create a new user account'''
         pw_hash = generate_password_hash(password)
-        result = select_with_condition('users', 'username', username)
+        result = self.select_with_condition('users', 'username', username)
         # check if username exists
         if "message" not in result:
             return dict(message="Username already exists. Try a different one.", error=409)
 
-        result2 = select_with_condition('users', 'email', email)
+        result2 = self.select_with_condition('users', 'email', email)
         # check if email exists
         if "message" not in result2:
             return dict(message="Email already in use. Try a different one.", error=409)
@@ -25,7 +25,7 @@ class User(BaseModel):
         self.cursor.execute(query, (name, username, email, pw_hash, role))
         self.conn.commit()
         # check that user was signed up
-        result3 = select_with_condition('users', 'username', username)
+        result3 = self.select_with_condition('users', 'username', username)
         if "message" in result3:
             return dict(message="Failed to signup, try again.", error=404)
 
@@ -49,10 +49,10 @@ class User(BaseModel):
 
     def get_all_users(self):
         '''get all users'''
-        result = select_no_condition('users', 'user_id')
+        result = self.select_no_condition('users', 'user_id')
         return result
 
     def get_user_by_username(self, username):
         '''get user details by username'''
-        result = select_with_condition('users', 'username', username)
+        result = self.select_with_condition('users', 'username', username)
         return result

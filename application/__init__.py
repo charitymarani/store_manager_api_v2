@@ -12,10 +12,10 @@ from manage import DbSetup
 
 def create_app(config):
     '''function configuring the Flask App'''
-    os.environ['ENV']= config
+    # os.environ['ENV']= config
     from .models.blacklist_model import RevokedTokens
     
-    my_db = DbSetup(config)
+    my_db = DbSetup()
     my_db.create_tables()
     my_db.create_default_admin()
     

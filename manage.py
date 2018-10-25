@@ -1,21 +1,27 @@
-from os import getenv
+import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from flask import Flask
 from werkzeug.security import generate_password_hash
 from instance.config import app_config
 
+ENVIRONMENT = os.environ['ENV']
+url = app_config[ENVIRONMENT].CONNECTION_STRING
 
-class DbSetup():
+
+class DbSetup(object):
     '''class to setup db connection'''
-    def __init__(self, config_name):
-        #create connection to database
-        self.connection_string = app_config[config_name].CONNECTION_STRING
-        self.connection = psycopg2.connect(self.connection_string)
-        
+    # def __init__(self, config_name):
+    #     #create connection to database
+    #     self.connection_string = app_config[config_name].CONNECTION_STRING
+    #     self.connection = psycopg2.connect(self.connection_string)
+
+    def connection(self, url):
+        conn = psycopg2.connect(url)
+        return conn
 
     def create_tables(self):
-        conn = psycopg2.connect(self.connection_string)
+        conn = self.connection(url)
         curr = conn.cursor()
         queries = self.tables()
         for query in queries:
@@ -23,26 +29,27 @@ class DbSetup():
         conn.commit()
         curr.close()
         conn.close()
+
     def create_default_admin(self):
-        conn=psycopg2.connect(self.connection_string)
-        curr=conn.cursor(cursor_factory=RealDictCursor)
-        pwh=generate_password_hash('1234admin')
-        query="INSERT INTO users(name, username, email, password,role)\
+        conn =self.connection(url)
+        curr = conn.cursor(cursor_factory=RealDictCursor)
+        pwh = generate_password_hash('1234admin')
+        query = "INSERT INTO users(name, username, email, password,role)\
                 VALUES(%s,%s,%s,%s,%s);"
-                
-        curr.execute(query,('Charity','defaultadmin','admin@gmail.com',pwh,'admin'))
+
+        curr.execute(query, ('Charity', 'defaultadmin',
+                             'admin@gmail.com', pwh, 'admin'))
         conn.commit()
         curr.close()
         conn.close()
-    
 
     def drop_tables(self):
-        table1 = """DROP TABLE IF EXISTS products CASCADE"""
-        table2 = """DROP TABLE IF EXISTS sales CASCADE"""
-        table3 = """DROP TABLE IF EXISTS users CASCADE"""
-        table4 = """DROP TABLE IF EXISTS blacklist CASCADE"""
+        table1 = """DROP TABLE IF EXISTS products"""
+        table2 = """DROP TABLE IF EXISTS sales"""
+        table3 = """DROP TABLE IF EXISTS users"""
+        table4 = """DROP TABLE IF EXISTS blacklist"""
 
-        conn = psycopg2.connect(self.connection_string)
+        conn = self.connection(url)
         curr = conn.cursor()
         queries = [table1, table2, table3, table4]
         for query in queries:
@@ -53,12 +60,12 @@ class DbSetup():
 
     def cursor(self):
         '''method to allow objects execute SQL querries on the db instance'''
-        cur = self.connection.cursor(cursor_factory=RealDictCursor)
+        cur = self.connection(url).cursor(cursor_factory=RealDictCursor)
         return cur
 
     def commit(self):
         '''commits changes to db'''
-        conn = psycopg2.connect(self.connection_string)
+        conn = self.connection(url)
         conn.commit()
 
     def tables(self):
