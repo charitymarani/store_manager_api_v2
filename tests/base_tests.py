@@ -6,7 +6,6 @@ from instance.config import app_config
 
 
 class BaseTestCase(TestCase):
-
     def setUp(self):
         self.app = create_app(config='testing')
         
@@ -34,8 +33,8 @@ class BaseTestCase(TestCase):
                                  )
     def tearDown(self):
         """removes the db and the context"""
-        self.db=DbSetup(config_name='testing')
-        self.db.drop_tables()
+        db = DbSetup(config_name='testing')
+        db.drop_tables()
 
     
     
