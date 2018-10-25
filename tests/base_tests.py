@@ -23,13 +23,13 @@ class Testbase(unittest.TestCase):
 
         self.register_data = dict(
             name='charity marani',
-            email='rodda@gmail.com',
+            email='rodday@gmail.com',
             role='attendant',
-            username='rodda',
+            username='rodday',
             password='1234',
             confirm_password='1234'
         )
-        self.login_data = dict(username='rodda',
+        self.login_data = dict(username='rodday',
                                password='1234'
                                )
         self.default_login = dict(username='defaultadmin',
