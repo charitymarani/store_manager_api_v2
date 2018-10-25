@@ -16,6 +16,7 @@ def create_app(config):
     
     my_db = SetupDB(config)
     my_db.create_tables()
+    my_db.create_default_admin()
     
     app = Flask(__name__)
     CORS(app)
