@@ -25,6 +25,7 @@ class Testbase(unittest.TestCase):
         self.loginurl = '/api/v2/login'
         self.logouturl = '/api/v2/logout'
         self.allusersurl = '/api/v2/users'
+        self.producturl = '/api/v2/products'
 
         self.register_data = dict(
             name='charity marani',
@@ -37,10 +38,42 @@ class Testbase(unittest.TestCase):
         self.login_data = dict(username='nicole',
                                password='1234'
                                )
+        self.register_data1 = dict(
+            name='charity marani',
+            email='kim@gmail.com',
+            role='attendant',
+            username='kim',
+            password='1234',
+            confirm_password='1234'
+        )
+        self.login_data1 = dict(username='kim',
+                               password='1234'
+                               )
         self.default_login = dict(username='defaultadmin',
                                   password='1234admin'
                                   )
+        self.productdata = dict(
+            product_id=501,
+            name='chunky heels',
+            category='shoes',
+            purchase_price=1000,
+            selling_price=1800,
+            quantity=70,
+            low_limit=10,
+            description='A wide based heel'
 
+        )
+        self.productdata2=dict(
+                    product_id=200,
+                    name='chunky heels',
+                    category='shoes',
+                    purchase_price=1000,
+                    selling_price=1800,
+                    quantity=70,
+                    low_limit=10,
+                    description='A wide based heel'
+
+                )
     def tearDown(self):
         """removes the db and the context"""
         self.app_context.pop()
