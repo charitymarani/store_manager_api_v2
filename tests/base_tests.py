@@ -12,6 +12,8 @@ class BaseTestCase(TestCase):
         self.app = create_app(config='testing')
         self.client = self.app.test_client()
         self.manage = DbSetup()
+        self.app_context=self.app.app_context()
+        self.app_context.push()
 
         self.signupurl = '/api/v2/register'
         self.loginurl = '/api/v2/login'
@@ -32,11 +34,7 @@ class BaseTestCase(TestCase):
 
     def tearDown(self):
         """removes the db and the context"""
+        self.app_context.pop()
 
-    current_environemt = os.environ['ENV']
-    conn_string = app_config[current_environemt].CONNECTION_STRING
-    conn = psycopg2.connect(conn_string)
-    cursor = conn.cursor()
-    cursor.execute("""DROP TABLE users,products,sales,blacklist""")
-    conn.commit()
-    conn.close()
+
+    
