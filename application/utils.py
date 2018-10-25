@@ -1,6 +1,7 @@
 from manage import DbSetup
 
-conn = DbSetup("development")
+CURRENT_ENVIRONMENT = os.environ['ENV']
+conn = DbSetup(CURRENT_ENVIRONMENT)
 cur = conn.cursor()
 
 
