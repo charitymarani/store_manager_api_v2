@@ -1,3 +1,4 @@
+import os
 from manage import DbSetup
 
 CURRENT_ENVIRONMENT = os.environ['ENV']
