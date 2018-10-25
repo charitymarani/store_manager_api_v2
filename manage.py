@@ -11,10 +11,6 @@ url = app_config[ENVIRONMENT].CONNECTION_STRING
 
 class DbSetup(object):
     '''class to setup db connection'''
-    # def __init__(self, config_name):
-    #     #create connection to database
-    #     self.connection_string = app_config[config_name].CONNECTION_STRING
-    #     self.connection = psycopg2.connect(self.connection_string)
 
     def connection(self, url):
         conn = psycopg2.connect(url)
@@ -30,17 +26,6 @@ class DbSetup(object):
         curr.close()
         conn.close()
         
-    def drop_tables(self):
-        query = "DROP TABLE IF EXISTS users, products, sales ,blacklist;"
-
-        conn=self.connection(url)
-        curr=self.cursor()
-        # queries=[t1,t2,t3,t4]
-        # for query in queries:
-        curr.execute(query)
-        conn.commit()
-        print("Dropped tables")
-        conn.close()
 
     def create_default_admin(self):
         conn =self.connection(url)
