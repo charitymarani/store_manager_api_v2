@@ -7,7 +7,7 @@ from instance.config import app_config
 CURRENT_ENVIRONMENT = os.environ['ENV']
 CONN_STRING = app_config[CURRENT_ENVIRONMENT].CONNECTION_STRING
 conn = psycopg2.connect(CONN_STRING)
-cur = conn.cursor()
+cur = conn.cursor(cursor_factory=RealDictCursor)
 
 
 def list_iterator(list_):
