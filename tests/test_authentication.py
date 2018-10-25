@@ -121,7 +121,7 @@ class TestAuthentication(BaseTestCase):
                 self.signupurl, headers=dict(Authorization="Bearer " + token),
                 data=json.dumps(dict(
                     name='charity marani',
-                    email='amina@gmail.com',
+                    email='rodda@gmail.com',
                     role='attendant',
                     username='jerry',
                     password='1234',
