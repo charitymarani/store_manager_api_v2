@@ -25,6 +25,7 @@ class Testbase(unittest.TestCase):
         self.logouturl = '/api/v2/logout'
         self.allusersurl = '/api/v2/users'
         self.producturl = '/api/v2/products'
+        self.salesurl='/api/v2/sales'
 
         self.register_data = dict(
             name='charity marani',
@@ -101,6 +102,17 @@ class Testbase(unittest.TestCase):
         self.empty_data_fields = dict(name="",
                                       category=""
                                       )
+        self.sales_data=dict(
+                    items_count=4,
+                    items="LV belt",
+                    price=5000
+                )
+        self.sales_data1=dict(
+                    items_count=4,
+                    items="chunky heel",
+                    price=5000
+                )
+
 
     def tearDown(self):
         """removes the db and the context"""

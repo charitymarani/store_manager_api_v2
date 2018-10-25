@@ -7,6 +7,7 @@ from flask_cors import CORS
 from instance.config import app_config
 from .views.user_endpoints import auth
 from .views.product_endpoints import product
+from .views.sales_enpoints import sale
 from manage import DbSetup
 
 my_db = DbSetup()
@@ -48,6 +49,7 @@ def create_app(config):
 
     app.register_blueprint(auth)
     app.register_blueprint(product)
+    app.register_blueprint(sale)
 
     my_db.create_tables()
     my_db.create_default_admin()
