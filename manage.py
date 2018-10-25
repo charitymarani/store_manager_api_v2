@@ -43,21 +43,6 @@ class DbSetup(object):
         curr.close()
         conn.close()
 
-    def drop_tables(self):
-        table1 = """DROP TABLE IF EXISTS products"""
-        table2 = """DROP TABLE IF EXISTS sales"""
-        table3 = """DROP TABLE IF EXISTS users"""
-        table4 = """DROP TABLE IF EXISTS blacklist"""
-
-        conn = self.connection(url)
-        curr = conn.cursor()
-        queries = [table1, table2, table3, table4]
-        for query in queries:
-            curr.execute(query)
-        conn.commit()
-        curr.close()
-        conn.close()
-
     def cursor(self):
         '''method to allow objects execute SQL querries on the db instance'''
         cur = self.connection(url).cursor(cursor_factory=RealDictCursor)
