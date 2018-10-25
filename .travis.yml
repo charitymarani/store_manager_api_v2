@@ -13,7 +13,7 @@ before_script:
 
  
 script:	
- - nosetests tests --with-coverage 
+ - pytest --setup-show tests 
 after_success:
  - coveralls
  - codeclimate-test-reporter
