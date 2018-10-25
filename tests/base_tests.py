@@ -1,3 +1,4 @@
+import os
 from unittest import TestCase
 from application import create_app
 from manage import DbSetup
