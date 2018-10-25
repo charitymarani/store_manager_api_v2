@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from instance.config import app_config
 from .views.user_endpoints import auth
+from manage import DbSetup
 
 
 
@@ -14,7 +15,7 @@ def create_app(config):
     os.environ["ENV"] = config
     from .models.blacklist_model import RevokedTokens
     
-    my_db = SetupDB(config)
+    my_db = DbSetup(config)
     my_db.create_tables()
     my_db.create_default_admin()
     
