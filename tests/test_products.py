@@ -7,7 +7,7 @@ class TestProducts(Testbase):
     def test_post_product(self):
         '''Only an admin can post products'''
         with self.client:
-             # login default admin
+            # login default admin
             login_response = self.client.post(
                 self.loginurl,
                 data=json.dumps(self.default_login),
@@ -34,10 +34,10 @@ class TestProducts(Testbase):
             # Test successful post
             response = self.client.post(
                 self.producturl, headers=dict(Authorization="Bearer " + token),
-                data = json.dumps(self.productdata),
-                content_type = 'application/json'
+                data=json.dumps(self.productdata),
+                content_type='application/json'
             )
-            
+
             response_data = json.loads(response.data)
             print(response_data)
             self.assertEqual(
@@ -91,7 +91,8 @@ class TestProducts(Testbase):
             self.assertEqual(response2.status_code, 206)
             # Test only admin can post products
             responseatt_post = self.client.post(
-                self.producturl, headers=dict(Authorization="Bearer " + tokenatt),
+                self.producturl, headers=dict(
+                    Authorization="Bearer " + tokenatt),
                 data=json.dumps(self.productdata2),
                 content_type='application/json'
 
@@ -101,3 +102,19 @@ class TestProducts(Testbase):
             self.assertEqual(
                 "Only an admin is permitted to post products", response_data_att["message"])
             self.assertEqual(responseatt_post.status_code, 401)
+
+    def test_get_all_products(self):
+        with self.client:
+            # login default admin
+            login_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.default_login),
+                content_type='application/json'
+            )
+            result = json.loads(login_response.data)
+        
+            token = result["token"]
+            #Get all products
+            response = self.client.get(
+                self.producturl, headers=dict(Authorization="Bearer " + token))
+            self.assertEqual(response.status_code, 200)

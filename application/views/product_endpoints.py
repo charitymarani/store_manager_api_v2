@@ -36,3 +36,10 @@ def post_product():
 
     response.status_code = 201
     return response 
+@product.route('/products',methods=['GET']) 
+@jwt_required
+def get_all_products():
+    '''Endpoint to get all products'''
+    response=jsonify(product_object.get_all_products())
+    response.status_code=200
+    return response

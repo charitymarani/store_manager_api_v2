@@ -20,3 +20,8 @@ class Products(BaseModel):
         self.conn.commit()
 
         return dict(response=dict(message=name + ", Posted!"), status_code=201)
+    def get_all_products(self):
+        '''get all products'''
+        result=self.select_no_condition('products','product_id')
+        
+        return result
