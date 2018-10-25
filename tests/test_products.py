@@ -227,6 +227,12 @@ class TestProducts(Testbase):
             )
             result = json.loads(login_response.data)
             token = result["token"]
+            #Post a product
+            self.client.post(
+                self.producturl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.productdata),
+                content_type='application/json'
+            )
             #Test successfull delete
             response=self.client.delete(self.producturl+'/504',headers=dict(Authorization="Bearer " + token))
             result=json.loads(response.data)
