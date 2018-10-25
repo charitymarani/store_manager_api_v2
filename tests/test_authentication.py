@@ -1,9 +1,9 @@
 
 import json
-from .base_tests import BaseTestCase
+from .base_tests import Testbase
 
 
-class TestAuthentication(BaseTestCase):
+class TestAuthentication(Testbase):
 
     def test_registration(self):
         with self.client:

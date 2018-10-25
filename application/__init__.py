@@ -8,23 +8,20 @@ from instance.config import app_config
 from .views.user_endpoints import auth
 from manage import DbSetup
 
+my_db = DbSetup()
 
 
 def create_app(config):
     '''function configuring the Flask App'''
     # os.environ['ENV']= config
     from .models.blacklist_model import RevokedTokens
-    
-    my_db = DbSetup()
-    my_db.create_tables()
-    my_db.create_default_admin()
-    
+
     app = Flask(__name__)
     CORS(app)
 
     app.url_map.strict_slashes = False
     app.config.from_object(app_config[config])
-    app.config['TESTING']= True
+    app.config['TESTING'] = True
 
     app.config['JWT_SECRET_KEY'] = 'mysecretkey'
     app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -50,5 +47,7 @@ def create_app(config):
 
     app.register_blueprint(auth)
 
-   
+    my_db.create_tables()
+    my_db.create_default_admin()
+
     return app
