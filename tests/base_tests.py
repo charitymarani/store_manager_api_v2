@@ -33,7 +33,7 @@ class BaseTestCase(TestCase):
                                  )
     def tearDown(self):
         """removes the db and the context"""
-        current_environemt = os.environ['ENV']
+        current_environment = os.environ['ENV']
         db=DbSetup(current_environment)
         db.drop_tables()
 
