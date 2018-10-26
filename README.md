@@ -1,9 +1,10 @@
+
+[![Build Status](https://travis-ci.org/charitymarani/store_manager_api_v2.svg?branch=Develop)](https://travis-ci.org/charitymarani/store_manager_api_v2)
+[![Coverage Status](https://coveralls.io/repos/github/charitymarani/store_manager_api_v2/badge.svg?branch=Develop)](https://coveralls.io/github/charitymarani/store_manager_api_v2?branch=Develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/bf31b1530f6eec756f65/maintainability)](https://codeclimate.com/github/charitymarani/store_manager_api_v2/maintainability)
 # store_manager_api_v2
 Store Manager api is a simple flask api that powers  a web application that helps store owners manage sales and product inventory records.Version 2 uses postgresql database to store data.
 
-[![Build Status](https://travis-ci.org/charitymarani/store_manager_api_v2.svg?branch=ft-sales-endpoints-161492473)](https://travis-ci.org/charitymarani/store_manager_api_v2)
-[![Coverage Status](https://coveralls.io/repos/github/charitymarani/store_manager_api_v2/badge.svg?branch=ft-sales-endpoints-161492473)](https://coveralls.io/github/charitymarani/store_manager_api_v2?branch=ft-sales-endpoints-161492473)
-[![Maintainability](https://api.codeclimate.com/v1/badges/bf31b1530f6eec756f65/maintainability)](https://codeclimate.com/github/charitymarani/store_manager_api_v2/maintainability)
 ### Available Endpoints:
 | Http Method | Endpoint Route | Endpoint Functionality |
 | :---         |     :---       |          :--- |
