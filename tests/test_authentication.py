@@ -107,7 +107,7 @@ class TestAuthentication(Testbase):
                 name='charity marani',
                 email='hez@gmail.com',
                 role='attendant',
-                username='nicole',
+                username='nicoleb',
                 password='1234',
                 confirm_password='1234'
             )),
@@ -121,7 +121,7 @@ class TestAuthentication(Testbase):
             self.signupurl, headers=dict(Authorization="Bearer " + token),
             data=json.dumps(dict(
                 name='charity marani',
-                email='nicole@gmail.com',
+                email='nicoleb@gmail.com',
                 role='attendant',
                 username='jerry',
                 password='1234',
