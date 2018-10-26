@@ -13,6 +13,9 @@ Store Manager api is a simple flask api that powers  a web application that help
 | POST     | /api/v2/logout       | Logout a user      |
 | GET     | /api/v2/users        | Gets all users     |
 | GET     | /api/v2/users/username       |Gets a single user by username       |
+| POST     | /api/v2/sales        | Post a new sale record     |
+| GET     | /api/v2/sales        | Gets all sale records     |
+| GET     | /api/v2/sales/saleid       |Gets a single sale by sale id       |
 
 
 ### Prerequisites
