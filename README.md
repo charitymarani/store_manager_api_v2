@@ -22,6 +22,7 @@ Store Manager api is a simple flask api that powers  a web application that help
 | GET     | /api/v2/sales/saleid       |Gets a single sale by sale id       |
 
 
+
 ### Prerequisites
 ```
   * pip
