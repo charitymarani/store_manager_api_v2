@@ -13,6 +13,11 @@ Store Manager api is a simple flask api that powers  a web application that help
 | POST     | /api/v2/logout       | Logout a user      |
 | GET     | /api/v2/users        | Gets all users     |
 | GET     | /api/v2/users/username       |Gets a single user by username       |
+| POST     | /api/v2/products        | Add a product      |
+| GET     | /api/v2/products       | Retrieve all products     |
+| GET     | /api/v2/products/productId       | Retrieve a single product by id     |
+| PUT    | /api/v2/products/productId       | Edit a  product record    |
+| DELETE     | /api/v2/products/productId       | Deletes a product    |
 | POST     | /api/v2/sales        | Post a new sale record     |
 | GET     | /api/v2/sales        | Gets all sale records     |
 | GET     | /api/v2/sales/saleid       |Gets a single sale by sale id       |
@@ -23,7 +28,19 @@ Store Manager api is a simple flask api that powers  a web application that help
   * pip
   * virtualenv
   * python 3 or python 2.7
+  * postgresql
+  * PgAdmin (Optional)
 ```
+### Setting up database
+#### To create the databases through the command line:
+  ```
+  $ psql postgres
+  postgres=# CREATE DATABASE store_manager
+  postgres=# CREATE DATABASE test_store_db
+  
+  ```
+ ### Alternatively use PgAdmin:
+  Open Postgres PgAdmin and create 2 databases test_store_db and store_manager
 ### Installation
 clone the repo
 
