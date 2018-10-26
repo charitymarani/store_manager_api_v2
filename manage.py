@@ -26,7 +26,19 @@ class DbSetup(object):
         curr.close()
         conn.close()
         
+    def drop_tables(self):
+        table1="""DROP TABLE IF EXISTS products CASCADE"""
+        table2="""DROP TABLE IF EXISTS sales CASCADE"""
+        table3="""DROP TABLE IF EXISTS users CASCADE"""
+        table4="""DROP TABLE IF EXISTS blacklist CASCADE"""
 
+        conn=self.connection(url)
+        curr=conn.cursor()
+        queries=[table1,table2,table3,table4]
+        for query in queries:
+            curr.execute(query)
+        conn.commit()
+        conn.close()  
     def create_default_admin(self):
         conn =self.connection(url)
         curr = conn.cursor(cursor_factory=RealDictCursor)
@@ -37,7 +49,6 @@ class DbSetup(object):
         curr.execute(query, ('Charity', 'defaultadmin',
                              'admin@gmail.com', pwh, 'admin'))
         conn.commit()
-        curr.close()
         conn.close()
 
     def cursor(self):

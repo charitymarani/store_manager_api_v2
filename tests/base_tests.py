@@ -6,14 +6,12 @@ from application import create_app, my_db
 from manage import DbSetup
 from instance.config import app_config
 
-
+db = DbSetup()
 class Testbase(unittest.TestCase):
-
+    db.drop_tables()
     def setUp(self):
-
+        '''Setup function for tests'''
         self.app = create_app('testing')
-        self.db = DbSetup()
-
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
 
