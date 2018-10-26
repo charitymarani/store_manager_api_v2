@@ -1,10 +1,9 @@
 # store_manager_api_v2
 Store Manager api is a simple flask api that powers  a web application that helps store owners manage sales and product inventory records.Version 2 uses postgresql database to store data.
 
-[![Build Status](https://travis-ci.org/charitymarani/store_manager_api_v2.svg?branch=Develop)](https://travis-ci.org/charitymarani/store_manager_api_v2)
-[![Coverage Status](https://coveralls.io/repos/github/charitymarani/store_manager_api_v2/badge.svg?branch=Develop)](https://coveralls.io/github/charitymarani/store_manager_api_v2?branch=Develop)
+[![Build Status](https://travis-ci.org/charitymarani/store_manager_api_v2.svg?branch=ft-sales-endpoints-161492473)](https://travis-ci.org/charitymarani/store_manager_api_v2)
+[![Coverage Status](https://coveralls.io/repos/github/charitymarani/store_manager_api_v2/badge.svg?branch=ft-sales-endpoints-161492473)](https://coveralls.io/github/charitymarani/store_manager_api_v2?branch=ft-sales-endpoints-161492473)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bf31b1530f6eec756f65/maintainability)](https://codeclimate.com/github/charitymarani/store_manager_api_v2/maintainability)
-
 ### Available Endpoints:
 | Http Method | Endpoint Route | Endpoint Functionality |
 | :---         |     :---       |          :--- |
@@ -18,6 +17,10 @@ Store Manager api is a simple flask api that powers  a web application that help
 | GET     | /api/v2/products/productId       | Retrieve a single product by id     |
 | PUT    | /api/v2/products/productId       | Edit a  product record    |
 | DELETE     | /api/v2/products/productId       | Deletes a product    |
+| POST     | /api/v2/sales        | Post a new sale record     |
+| GET     | /api/v2/sales        | Gets all sale records     |
+| GET     | /api/v2/sales/saleid       |Gets a single sale by sale id       |
+
 
 
 ### Prerequisites
@@ -25,7 +28,19 @@ Store Manager api is a simple flask api that powers  a web application that help
   * pip
   * virtualenv
   * python 3 or python 2.7
+  * postgresql
+  * PgAdmin (Optional)
 ```
+### Setting up database
+#### To create the databases through the command line:
+  ```
+  $ psql postgres
+  postgres=# CREATE DATABASE store_manager
+  postgres=# CREATE DATABASE test_store_db
+  
+  ```
+ ### Alternatively use PgAdmin:
+  Open Postgres PgAdmin and create 2 databases test_store_db and store_manager
 ### Installation
 clone the repo
 

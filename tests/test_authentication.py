@@ -18,12 +18,12 @@ class TestAuthentication(Testbase):
         # Test successful register
         response = self.client.post(
             self.signupurl, headers=dict(Authorization="Bearer " + token),
-            data=json.dumps(self.register_data),
+            data=json.dumps(self.register_data4),
             content_type='application/json'
         )
         response_data1 = json.loads(response.data)
         self.assertEqual(
-            "Welcome nicole!", response_data1["message"])
+            "Welcome nicoleb!", response_data1["message"])
         self.assertEqual(response.status_code, 201)
         # Test registration with nonexistent role
 
@@ -31,9 +31,9 @@ class TestAuthentication(Testbase):
             self.signupurl, headers=dict(Authorization="Bearer " + token),
             data=json.dumps(dict(
                 name='charity marani',
-                email='nicole@gmail.com',
+                email='nicoleb@gmail.com',
                 role='sWEEper',
-                username='nicole',
+                username='nicoleb',
                 password='1234',
                 confirm_password='1234'
             )),
@@ -107,7 +107,7 @@ class TestAuthentication(Testbase):
                 name='charity marani',
                 email='hez@gmail.com',
                 role='attendant',
-                username='nicole',
+                username='nicoleb',
                 password='1234',
                 confirm_password='1234'
             )),
@@ -121,7 +121,7 @@ class TestAuthentication(Testbase):
             self.signupurl, headers=dict(Authorization="Bearer " + token),
             data=json.dumps(dict(
                 name='charity marani',
-                email='nicole@gmail.com',
+                email='nicoleb@gmail.com',
                 role='attendant',
                 username='jerry',
                 password='1234',
@@ -138,14 +138,14 @@ class TestAuthentication(Testbase):
             # Test success
             response = self.client.post(
                 self.loginurl,
-                data=json.dumps(self.login_data),
+                data=json.dumps(self.login_data4),
                 content_type='application/json'
             )
             response_data1 = json.loads(response.data)
             token1 = response_data1["token"]
 
             self.assertEqual(
-                "Login successful!Welcome back, nicole!", response_data1["message"])
+                "Login successful!Welcome back, nicoleb!", response_data1["message"])
             self.assertEqual(response.status_code, 200)
             # Test attendant can't register user
             responsea = self.client.post(
@@ -187,7 +187,7 @@ class TestAuthentication(Testbase):
             response4 = self.client.post(
                 self.loginurl,
                 data=json.dumps(dict(
-                    username='nicole',
+                    username='nicoleb',
                     password='vbnc'
 
                 )),
@@ -216,7 +216,7 @@ class TestAuthentication(Testbase):
            # Test logout
             response = self.client.post(
                 self.loginurl,
-                data=json.dumps(self.login_data),
+                data=json.dumps(self.login_data4),
                 content_type='application/json'
             )
             response_data1 = json.loads(response.data)
@@ -237,7 +237,7 @@ class TestAuthentication(Testbase):
     def test_get_user_by_username(self):
         with self.client:
             # Test success
-            result = self.client.get(self.allusersurl+'/nicole')
+            result = self.client.get(self.allusersurl+'/nicoleb')
             self.assertEqual(result.status_code, 200)
             # Test user by noexistent username
             result2 = self.client.get(self.allusersurl+'/amos')

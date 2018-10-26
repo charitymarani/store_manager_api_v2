@@ -12,7 +12,7 @@ class Config(object):
 class Development(Config):
     '''Configurations for development'''
     DEBUG = True
-    CONNECTION_STRING = "dbname = 'store_manager' host = 'localhost' user = 'postgres'"
+    CONNECTION_STRING = "dbname = 'store_manager' user = 'postgres' host= 'localhost' password='chacha'"
     os.environ['ENV'] = 'development'
 
 
@@ -20,7 +20,7 @@ class Testing(Config):
     '''configurations for testing with a separate test database'''
     TESTING = True
     DEBUG = True
-    CONNECTION_STRING = "dbname = 'test_store_db' host = 'localhost' user = 'postgres'"
+    CONNECTION_STRING = "dbname = 'test_store_db' user = 'postgres' host ='localhost'"
     os.environ['ENV'] = 'testing'
     
 
