@@ -68,6 +68,17 @@ class Testbase(unittest.TestCase):
             password='1234',
             confirm_password='1234'
         )
+        self.register_data4 = dict(
+            name='charity marani',
+            email='nicoleb@gmail.com',
+            role='attendant',
+            username='nicoleb',
+            password='1234',
+            confirm_password='1234'
+        )
+        self.login_data4 = dict(username='nicoleb',
+                               password='1234'
+                               )
         self.login_data3 = dict(username='geb',
                                 password='1234'
                                 )

@@ -11,7 +11,9 @@ services:
 before_script:
 - psql -c 'create database test_store_db;' -U postgres
 
- 
+env:
+  - DB = store_manager USER = postgres  
+
 script:	
  - nosetests tests --with-coverage
 after_success:

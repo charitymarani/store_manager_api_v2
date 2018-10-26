@@ -18,12 +18,12 @@ class TestAuthentication(Testbase):
         # Test successful register
         response = self.client.post(
             self.signupurl, headers=dict(Authorization="Bearer " + token),
-            data=json.dumps(self.register_data),
+            data=json.dumps(self.register_data4),
             content_type='application/json'
         )
         response_data1 = json.loads(response.data)
         self.assertEqual(
-            "Welcome nicole!", response_data1["message"])
+            "Welcome nicoleb!", response_data1["message"])
         self.assertEqual(response.status_code, 201)
         # Test registration with nonexistent role
 
