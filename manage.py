@@ -11,10 +11,6 @@ url = app_config[ENVIRONMENT].CONNECTION_STRING
 
 class DbSetup(object):
     '''class to setup db connection'''
-    # def __init__(self, config_name):
-    #     #create connection to database
-    #     self.connection_string = app_config[config_name].CONNECTION_STRING
-    #     self.connection = psycopg2.connect(self.connection_string)
 
     def connection(self, url):
         conn = psycopg2.connect(url)
@@ -30,21 +26,7 @@ class DbSetup(object):
         curr.close()
         conn.close()
         
-#     def drop_tables(self):
-#         t1="""DROP TABLE IF EXISTS products CASCADE"""
-#         t2="""DROP TABLE IF EXISTS sales CASCADE"""
-#         t3="""DROP TABLE IF EXISTS users CASCADE"""
-#         t4="""DROP TABLE IF EXISTS blacklist CASCADE"""
 
-#         conn=self.connection(url)
-#         curr=conn.cursor()
-#         queries=[t1,t2,t3,t4]
-#         for query in queries:
-#             curr.execute(query)
-#         print("Dropped tables")
-#         conn.commit()
-#         curr.close()
-#         conn.close()
     def create_default_admin(self):
         conn =self.connection(url)
         curr = conn.cursor(cursor_factory=RealDictCursor)
@@ -72,30 +54,30 @@ class DbSetup(object):
 
         query1 = """CREATE TABLE IF NOT EXISTS products (
             product_id integer PRIMARY KEY,
-            name varchar(20) NOT NULL,
+            name varchar(200) NOT NULL,
             purchase_price integer,
-            category varchar(20),
+            category varchar(200),
             selling_price integer,
             low_limit integer NOT NULL,
             quantity integer NOT NULL,
-            description varchar(20),
+            description varchar(200),
             date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
             """
         query2 = """CREATE TABLE IF NOT EXISTS users (
             user_id serial PRIMARY KEY NOT NULL,
-            name varchar(20) NOT NULL,
-            username varchar(20) NOT NULL,
+            name varchar(200) NOT NULL,
+            username varchar(200) NOT NULL,
             email varchar(100) NOT NULL,
-            role varchar(20) NOT NULL,
+            role varchar(200) NOT NULL,
             password varchar(300) NOT NULL,
             date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
             """
         query3 = """CREATE TABLE IF NOT EXISTS sales (
             sale_id serial PRIMARY KEY NOT NULL,
-            items varchar(20) NOT NULL,
+            items varchar(200) NOT NULL,
             items_count integer NOT NULL,
             price integer NOT NULL,
-            created_by varchar(20) NOT NULL,
+            created_by varchar(200) NOT NULL,
             date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
             """
         query4 = '''CREATE TABLE IF NOT EXISTS blacklist(

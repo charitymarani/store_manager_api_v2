@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from instance.config import app_config
 from .views.user_endpoints import auth
+from .views.product_endpoints import product
 from manage import DbSetup
 
 my_db = DbSetup()
@@ -46,6 +47,7 @@ def create_app(config):
         return revoked_tokens.is_jti_blacklisted(json_token_identifier)
 
     app.register_blueprint(auth)
+    app.register_blueprint(product)
 
     my_db.create_tables()
     my_db.create_default_admin()
