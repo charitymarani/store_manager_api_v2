@@ -6,7 +6,7 @@ from manage import DbSetup
 
 CONFIG_NAME = "development"
 app = create_app(CONFIG_NAME)
-db=DbSetup()
+
 
 
 @app.route('/')

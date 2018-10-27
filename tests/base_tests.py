@@ -1,13 +1,13 @@
 import os
 import psycopg2
-
 import unittest
-from application import create_app, my_db
+from application import create_app
 from manage import DbSetup
 from instance.config import app_config
 
-db = DbSetup()
+
 class Testbase(unittest.TestCase):
+    db = DbSetup(config_name='testing')
     db.drop_tables()
     def setUp(self):
         '''Setup function for tests'''

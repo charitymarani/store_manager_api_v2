@@ -3,26 +3,27 @@
 import os
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from flask_cors import CORS
 from instance.config import app_config
 from .views.user_endpoints import auth
 from .views.product_endpoints import product
 from .views.sales_enpoints import sale
 from manage import DbSetup
 
-my_db = DbSetup()
 
 
-def create_app(config):
+
+def create_app(config_name):
     '''function configuring the Flask App'''
-    # os.environ['ENV']= config
+    os.environ["ENV"]= config_name
     from .models.blacklist_model import RevokedTokens
-
+   
+    
+    my_db = DbSetup(config_name)
     app = Flask(__name__)
-    CORS(app)
+   
 
     app.url_map.strict_slashes = False
-    app.config.from_object(app_config[config])
+    app.config.from_object(app_config[config_name])
     app.config['TESTING'] = True
 
     app.config['JWT_SECRET_KEY'] = 'mysecretkey'

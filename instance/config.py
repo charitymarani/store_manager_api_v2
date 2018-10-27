@@ -7,21 +7,23 @@ class Config(object):
     '''parent config file'''
     DEBUG = True
     SECRET_KEY = os.urandom(24)
+    CONNECTION_STRING = os.getenv('CONNECTION_STRING')
+
 
 
 class Development(Config):
     '''Configurations for development'''
     DEBUG = True
-    CONNECTION_STRING = "dbname = 'store_manager' user = 'postgres' host='localhost' port ='5432' password='chacha'"
-    os.environ['ENV'] = 'development'
-
+    os.environ["ENV"]='development'
+    
 
 class Testing(Config):
     '''configurations for testing with a separate test database'''
     TESTING = True
     DEBUG = True
-    CONNECTION_STRING = "dbname = 'test_store_db' user = 'postgres' host ='localhost'"
-    os.environ['ENV'] = 'testing'
+    os.environ["ENV"]='testing'
+    CONNECTION_STRING = "dbname = 'test_store_db' user = 'postgres' host ='localhost' port ='5432' password='chacha'"
+    
     
 
 
