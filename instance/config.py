@@ -15,6 +15,7 @@ class Development(Config):
     '''Configurations for development'''
     DEBUG = True
     os.environ["ENV"]='development'
+    DATABASE_URL=os.getenv("DATABASE_URL")
     
 
 class Testing(Config):
