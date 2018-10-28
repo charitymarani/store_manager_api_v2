@@ -127,3 +127,4 @@ class Testbase(unittest.TestCase):
         """removes the db and the context"""
         with self.app_context:
             self.app_context.pop()
+            
