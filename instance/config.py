@@ -7,7 +7,7 @@ class Config(object):
     '''parent config file'''
     DEBUG = True
     SECRET_KEY = os.urandom(24)
-    CONNECTION_STRING = os.getenv('CONNECTION_STRING')
+    CONNECTION_STRING = os.environ('DATABASE_URL')
 
 
 
@@ -15,7 +15,7 @@ class Development(Config):
     '''Configurations for development'''
     DEBUG = True
     os.environ["ENV"]='development'
-    DATABASE_URL=os.getenv("DATABASE_URL")
+    # CONNECTION_STRING=os.getenv("DATABASE_URL")
     
 
 class Testing(Config):
