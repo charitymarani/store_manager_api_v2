@@ -7,7 +7,7 @@ class Config(object):
     '''parent config file'''
     DEBUG = True
     SECRET_KEY = os.urandom(24)
-    CONNECTION_STRING = os.environ('DATABASE_URL')
+    CONNECTION_STRING = os.environ['DATABASE_URL']
 
 
 
