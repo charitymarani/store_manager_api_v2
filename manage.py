@@ -1,10 +1,12 @@
 import os
 import psycopg2
+import datetime
 from psycopg2.extras import RealDictCursor
 from flask import Flask
 from werkzeug.security import generate_password_hash
 from instance.config import app_config
-import datetime
+
+
 
 # ENVIRONMENT = os.environ['ENV']
 # url = app_config[ENVIRONMENT].CONNECTION_STRING
@@ -50,16 +52,17 @@ class DbSetup(object):
         conn =self.connection()
         curr = self.cursor()
         pwh = generate_password_hash('1234admin')
-        
-        query = "INSERT INTO users(name, username, email, password,role)\
-                VALUES(%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING;"
+        a_query="SELECT * FROM users WHERE username=%s"
+        curr.execute(a_query,('defaultadmin',))
+        admin=curr.fetchone()
+        if not admin:
+            query = "INSERT INTO users(name, username, email, password,role)\
+                VALUES(%s,%s,%s,%s,%s)"
 
-        curr.execute(query, ('Charity', 'defaultadmin',
-                             'admin@gmail.com', pwh, 'admin'))
-        conn.commit()
-        
-        
-
+            curr.execute(query, ('Charity', 'defaultadmin',
+                                'admin@gmail.com', pwh, 'admin'))
+            conn.commit()
+     
     def cursor(self):
         '''method to allow objects execute SQL querries on the db instance'''
         cur = self.connection().cursor(cursor_factory=RealDictCursor)
