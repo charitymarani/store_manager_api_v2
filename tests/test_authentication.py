@@ -90,6 +90,7 @@ class TestAuthentication(Testbase):
                                                     "email": "gebby@to.cm", "password": "Test123",
                                                     "confirm_password": "Test123", "role": "attendant"}))
         my_data3 = json.loads(result3.data)
+        print(my_data3)
         self.assertEqual(result3.status_code, 206)
         self.assertEqual(
             "Make sure all fields have been filled out", my_data3["message"])

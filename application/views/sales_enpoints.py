@@ -18,7 +18,7 @@ def post_sales():
     if not data:
         return jsonify({"message": "Fields cannot be empty"}), 400
     items_count = data.get("items_count")
-    items = data.get("items")
+    items = data.get("item")
     price = data.get("price")
     created_by = get_jwt_identity()
     salesinfo = [items_count, price, items]

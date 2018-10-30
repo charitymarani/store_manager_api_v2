@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify,Blueprint,json
 from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
 from ..models import product_model
-from ..utils import list_iterator
+from ..utils import list_iterator,check_is_int
 
 product = Blueprint('product', __name__,url_prefix='/api/v2')
 
@@ -24,7 +24,10 @@ def post_product():
     limit=data.get("low_limit")
     desc=data.get("description")
 
-    productinfo=[product_id,name,qty,limit,S_price]
+    productinfo=[product_id,name,qty,limit,S_price,category,B_price,desc]
+    product_int=[product_id,B_price,S_price,qty,limit]
+    check_is_int(product_int)
+    
     exists = list_iterator(productinfo)
     if exists is False:
         return jsonify({"message": "Some required fields are missing!"}) ,206
