@@ -7,7 +7,7 @@ from manage import DbSetup
 
 
 
-CURRENT_ENVIRONMENT= os.getenv('ENV')
+CURRENT_ENVIRONMENT= os.environ['ENV']
 CONN_STRING = app_config[CURRENT_ENVIRONMENT].CONNECTION_STRING
 class BaseModel(object):
     

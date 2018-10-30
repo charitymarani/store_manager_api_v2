@@ -18,6 +18,7 @@ class Testing(Config):
     '''configurations for testing with a separate test database'''
     TESTING = True
     DEBUG = True
+    os.environ['ENV']='testing'
     
     CONNECTION_STRING = "dbname = 'test_store_db' user = 'postgres' host ='localhost' port ='5432' password='chacha'"
     
