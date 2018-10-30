@@ -8,10 +8,12 @@ class Products(BaseModel):
         # self.cursor.execute("SELECT * FROM products WHERE product_id = (%s);", (product_id, ))
         result = self.select_with_condition(
             'products', 'product_id', product_id)
-        if "message" not in result:
+        result2=self.select_with_condition('products','name',name)
+        if "message" not in result or "message" not in result2:
             resp = dict(
-                message="The product Id you entered is being used for another product")
+                message="The product already exists,you can update product quantity instead")
             return dict(response=resp, status_code=409)
+            
         query = """INSERT INTO products(product_id, name, category, purchase_price, selling_price, quantity, low_limit, description)
                 VALUES(%s, %s, %s, %s, %s, %s, %s, %s);"""
         self.cursor.execute(query, (product_id, name, category, purchase_price,
@@ -20,7 +22,7 @@ class Products(BaseModel):
         self.conn.commit()
 
         return dict(response=dict(message=name + ", Posted!"), status_code=201)
-
+    
     def get_all_products(self):
         '''get all products'''
         result = self.select_no_condition('products', 'product_id')

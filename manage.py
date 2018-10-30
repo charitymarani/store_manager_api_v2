@@ -1,9 +1,12 @@
 import os
 import psycopg2
+import datetime
 from psycopg2.extras import RealDictCursor
 from flask import Flask
 from werkzeug.security import generate_password_hash
 from instance.config import app_config
+
+
 
 # ENVIRONMENT = os.environ['ENV']
 # url = app_config[ENVIRONMENT].CONNECTION_STRING
@@ -15,6 +18,7 @@ class DbSetup(object):
         #create connection to database
         self.connection_string = app_config[config_name].CONNECTION_STRING
         self.conn = psycopg2.connect(self.connection_string)
+        
 
     def connection(self):
         
@@ -27,6 +31,7 @@ class DbSetup(object):
         for query in queries:
             curr.execute(query)
         conn.commit()
+        print("created admin")
        
         
     def drop_tables(self):
@@ -41,19 +46,23 @@ class DbSetup(object):
         for query in queries:
             curr.execute(query)
         conn.commit()
+        print("Droped")
        
     def create_default_admin(self):
         conn =self.connection()
         curr = self.cursor()
         pwh = generate_password_hash('1234admin')
-        query = "INSERT INTO users(name, username, email, password,role)\
-                VALUES(%s,%s,%s,%s,%s);"
+        a_query="SELECT * FROM users WHERE username=%s"
+        curr.execute(a_query,('defaultadmin',))
+        admin=curr.fetchone()
+        if not admin:
+            query = "INSERT INTO users(name, username, email, password,role)\
+                VALUES(%s,%s,%s,%s,%s)"
 
-        curr.execute(query, ('Charity', 'defaultadmin',
-                             'admin@gmail.com', pwh, 'admin'))
-        conn.commit()
-        
-
+            curr.execute(query, ('Charity', 'defaultadmin',
+                                'admin@gmail.com', pwh, 'admin'))
+            conn.commit()
+     
     def cursor(self):
         '''method to allow objects execute SQL querries on the db instance'''
         cur = self.connection().cursor(cursor_factory=RealDictCursor)
@@ -65,17 +74,17 @@ class DbSetup(object):
         conn.commit()
 
     def tables(self):
-
+        
         query1 = """CREATE TABLE IF NOT EXISTS products (
             product_id integer PRIMARY KEY,
             name varchar(200) NOT NULL,
-            purchase_price integer,
-            category varchar(200),
-            selling_price integer,
+            purchase_price integer NOT NULL,
+            category varchar(200) NOT NULL,
+            selling_price integer NOT NULL,
             low_limit integer NOT NULL,
             quantity integer NOT NULL,
             description varchar(200),
-            date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
+            date_created TIMESTAMP )
             """
         query2 = """CREATE TABLE IF NOT EXISTS users (
             user_id serial PRIMARY KEY NOT NULL,
@@ -84,15 +93,15 @@ class DbSetup(object):
             email varchar(100) NOT NULL,
             role varchar(200) NOT NULL,
             password varchar(300) NOT NULL,
-            date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
+            date_created TIMESTAMP )
             """
         query3 = """CREATE TABLE IF NOT EXISTS sales (
             sale_id serial PRIMARY KEY NOT NULL,
-            items varchar(200) NOT NULL,
+            item varchar(200) NOT NULL,
             items_count integer NOT NULL,
             price integer NOT NULL,
             created_by varchar(200) NOT NULL,
-            date_created timestamp with time zone DEFAULT ('now'::text)::date NOT NULL)
+            date_created TIMESTAMP)
             """
         query4 = '''CREATE TABLE IF NOT EXISTS blacklist(
                     token_id SERIAL PRIMARY KEY NOT NULL,

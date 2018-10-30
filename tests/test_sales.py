@@ -172,7 +172,7 @@ class TestSales(Testbase):
             tokenatt2 = resultatt2["token"]
 
             # let attendant1 post a sale
-            self.client.post('/api/v1/sales',
+            self.client.post(self.salesurl,
                              headers=dict(Authorization="Bearer " + tokenatt),
                              data=json.dumps(self.sales_data),
                              content_type='application/json'

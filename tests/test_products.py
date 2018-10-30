@@ -53,7 +53,7 @@ class TestProducts(Testbase):
 
             response_dataz = json.loads(responsez.data)
             self.assertEqual(
-                "The product Id you entered is being used for another product", response_dataz["response"]["message"])
+                "The product already exists,you can update product quantity instead", response_dataz["response"]["message"])
 
             # Test empty data
             response1 = self.client.post(

@@ -1,6 +1,7 @@
 import os
 import psycopg2
 import unittest
+import json
 from application import create_app
 from manage import DbSetup
 from instance.config import app_config
@@ -96,7 +97,7 @@ class Testbase(unittest.TestCase):
         )
         self.productdata2 = dict(
             product_id=200,
-            name='chunky heels',
+            name='flat shoes',
             category='shoes',
             purchase_price=1000,
             selling_price=1800,
@@ -113,14 +114,16 @@ class Testbase(unittest.TestCase):
                                       )
         self.sales_data=dict(
                     items_count=4,
-                    items="LV belt",
+                    item="chunky heels",
                     price=5000
                 )
         self.sales_data1=dict(
                     items_count=4,
-                    items="chunky heel",
+                    item="chunky heel",
                     price=5000
                 )
+   
+                
 
 
     def tearDown(self):
