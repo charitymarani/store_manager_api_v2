@@ -1,26 +1,23 @@
 
 '''application/__init__.py'''
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from instance.config import app_config
 from .views.user_endpoints import auth
 from .views.product_endpoints import product
 from .views.sales_enpoints import sale
+from .views.cart_endpoints import cart
 from manage import DbSetup
-
-
 
 
 def create_app(config_name):
     '''function configuring the Flask App'''
-    os.environ["ENV"]= config_name
+
     from .models.blacklist_model import RevokedTokens
-   
-    
-    my_db = DbSetup(config_name)
+    from .error_handlers import resource_not_found, method_not_allowed, bad_request
+
     app = Flask(__name__)
-   
 
     app.url_map.strict_slashes = False
     app.config.from_object(app_config[config_name])
@@ -51,7 +48,16 @@ def create_app(config_name):
     app.register_blueprint(auth)
     app.register_blueprint(product)
     app.register_blueprint(sale)
+    app.register_blueprint(cart)
+    app.register_error_handler(404, resource_not_found)
+    app.register_error_handler(405, method_not_allowed)
+    app.register_error_handler(400, bad_request)
 
+    @app.errorhandler(Exception)
+    def unhandled_exception(e):
+        return jsonify(dict(error='Your request cannot be proccessed. the server experienced an internal error')), 500
+
+    my_db = DbSetup(config_name)
     my_db.create_tables()
     my_db.create_default_admin()
 

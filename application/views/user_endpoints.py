@@ -4,7 +4,7 @@ import random
 import re
 from flask import Flask, request, jsonify, Blueprint
 from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token, get_raw_jwt,get_jwt_claims)
+    JWTManager, jwt_required, create_access_token, get_raw_jwt, get_jwt_claims, get_jwt_identity)
 from ..models import user_model, blacklist_model
 from ..utils import list_iterator
 
@@ -44,10 +44,10 @@ def register():
         r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
     if match is None:
         return jsonify({"message": "Enter a valid email address"}), 403
-    claims=get_jwt_claims()
-    admin="admin"
+    claims = get_jwt_claims()
+    admin = "admin"
     if claims["role"] != admin:
-        return jsonify({"message":"Only an admin can add new users!"}),401
+        return jsonify({"message": "Only an admin can add new users!"}), 401
     response = jsonify(user_object.put(name, username, email, password, role))
     response.status_code = 201
     return response
@@ -96,5 +96,18 @@ def get_all_users():
 def get_user_by_username(username):
     '''Endpoint to get a  user by username'''
     response = jsonify(user_object.get_user_by_username(username))
+    response.status_code = 200
+    return response
+
+
+@auth.route('/users/<username>', methods=['PUT'])
+@jwt_required
+def promote_demote_user(username):
+    '''Endpoint to promote or demote a user'''
+    identity = get_jwt_identity()
+    admin = 'defaultadmin'
+    if identity != admin:
+        return jsonify({"message": "Only an super admin edit user roles"}), 401
+    response = jsonify(user_object.promote_demote_user(username))
     response.status_code = 200
     return response

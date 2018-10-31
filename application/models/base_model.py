@@ -5,7 +5,7 @@ from psycopg2.extras import RealDictCursor
 from instance.config import app_config
 from manage import DbSetup
 
-CURRENT_ENVIRONMENT = os.environ['ENV']
+CURRENT_ENVIRONMENT = os.getenv('ENV')
 CONN_STRING = app_config[CURRENT_ENVIRONMENT].CONNECTION_STRING
 
 
@@ -33,3 +33,12 @@ class BaseModel(object):
         if list_:
             return list_
         return {"message": "There are no {} records".format(table)}
+
+    def select_all_with_condition(self, table, column, param):
+        '''select based on a condition'''
+        query = 'SELECT * FROM {} WHERE {} =%s'.format(table, column)
+        self.cursor.execute(query, (param,))
+        list_ = self.cursor.fetchall()
+        if list_:
+            return list_
+        return {"message": "{} does not exist in our records".format(column)}

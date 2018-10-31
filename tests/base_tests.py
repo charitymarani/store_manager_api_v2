@@ -1,6 +1,7 @@
 import os
 import psycopg2
 import unittest
+import json
 from application import create_app
 from manage import DbSetup
 from instance.config import app_config
@@ -24,6 +25,7 @@ class Testbase(unittest.TestCase):
         self.allusersurl = '/api/v2/users'
         self.producturl = '/api/v2/products'
         self.salesurl='/api/v2/sales'
+        self.carturl='/api/v2/carts'
 
         self.register_data = dict(
             name='charity marani',
@@ -74,6 +76,15 @@ class Testbase(unittest.TestCase):
             password='1234',
             confirm_password='1234'
         )
+        self.register_data5 = dict(
+            name='charity marani',
+            email='aim@gmail.com',
+            role='attendant',
+            username='aim',
+            password='1234',
+            confirm_password='1234'
+        )
+
         self.login_data4 = dict(username='nicoleb',
                                password='1234'
                                )
@@ -84,43 +95,74 @@ class Testbase(unittest.TestCase):
                                   password='1234admin'
                                   )
         self.productdata = dict(
-            product_id=504,
-            name='chunky heels',
-            category='shoes',
+            product_id=120,
+            name='scarf',
+            category='clothes',
             purchase_price=1000,
             selling_price=1800,
             quantity=70,
             low_limit=10,
-            description='A wide based heel'
+            description='A warm cloth'
 
         )
         self.productdata2 = dict(
-            product_id=200,
-            name='chunky heels',
+            product_id=130,
+            name='pen',
             category='shoes',
             purchase_price=1000,
             selling_price=1800,
             quantity=70,
             low_limit=10,
-            description='A wide based heel'
+            description='writing tool'
 
         )
+        self.productdata3 = dict(
+            product_id=140,
+            name='phone',
+            category='electronics',
+            purchase_price=1000,
+            selling_price=1800,
+            quantity=70,
+            low_limit=10,
+            description='communication device'
+
+        )
+        self.productdata4 = dict(
+            product_id=150,
+            name='earphones',
+            category='electronics',
+            purchase_price=1000,
+            selling_price=1800,
+            quantity=70,
+            low_limit=10,
+            description='communication device'
+
+        )
+        
         self.edit_data = dict(quantity=70,
                               low_limit=10,
                               description='wide based heel')
         self.empty_data_fields = dict(name="",
                                       category=""
                                       )
-        self.sales_data=dict(
-                    items_count=4,
-                    items="LV belt",
-                    price=5000
+        self.cart_data=dict(
+                    quantity=4,
+                    cart_item="scarf"
                 )
-        self.sales_data1=dict(
-                    items_count=4,
-                    items="chunky heel",
-                    price=5000
+        self.cart_data1=dict(
+                    quantity=4,
+                    cart_item="pen"
                 )
+        self.cart_data2=dict(
+                    quantity=4,
+                    cart_item="earphones"
+                )
+        self.no_cart_item=dict(
+                    quantity=4,
+                    cart_item="book"
+                )
+   
+                
 
 
     def tearDown(self):

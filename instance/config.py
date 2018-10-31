@@ -10,22 +10,17 @@ class Config(object):
     CONNECTION_STRING = os.getenv('CONNECTION_STRING')
 
 
-
 class Development(Config):
     '''Configurations for development'''
     DEBUG = True
-    os.environ["ENV"]='development'
-    DATABASE_URL=os.getenv("DATABASE_URL")
-    
+
 
 class Testing(Config):
     '''configurations for testing with a separate test database'''
     TESTING = True
     DEBUG = True
-    os.environ["ENV"]='testing'
+    os.environ['ENV'] = 'testing'
     CONNECTION_STRING = "dbname = 'test_store_db' user = 'postgres' host ='localhost' port ='5432' password='chacha'"
-    
-    
 
 
 app_config = {

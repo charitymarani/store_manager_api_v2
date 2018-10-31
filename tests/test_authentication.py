@@ -12,7 +12,6 @@ class TestAuthentication(Testbase):
                                  data=json.dumps(self.default_login),
                                  content_type='application/json')
         resp = json.loads(login.data.decode())
-        print(resp)
         token = resp["token"]
         self.assertEqual(login.status_code, 200)
         # Test successful register
@@ -40,7 +39,6 @@ class TestAuthentication(Testbase):
             content_type='application/json'
         )
         response_data8 = json.loads(response8.data)
-        print(response_data8)
         self.assertEqual(response8.status_code, 400)
         self.assertEqual(
             "The role sweeper does not exist.Only admin and attendant roles are allowed", response_data8["message"])
@@ -244,3 +242,21 @@ class TestAuthentication(Testbase):
             resp = json.loads(result2.data)
             self.assertEqual(
                 "username does not exist in our records", resp["message"])
+    def test_promote_demote(self):
+        # login default admin
+        login = self.client.post(self.loginurl,
+                                 data=json.dumps(self.default_login),
+                                 content_type='application/json')
+        response_login = json.loads(login.data.decode())
+        token = response_login["token"]
+        self.assertEqual(login.status_code, 200)
+        self.client.post(
+            self.signupurl, headers=dict(Authorization="Bearer " + token),
+            data=json.dumps(self.register_data5),
+            content_type='application/json'
+        )
+        result_update_role = self.client.put(self.allusersurl+'/aim',headers=dict(Authorization="Bearer " + token))
+        result_role_data=json.loads(result_update_role.data)
+        self.assertEqual("User role updated!",result_role_data["message"])
+        self.assertEqual(result_update_role.status_code, 200)
+

@@ -31,23 +31,49 @@ class TestSales(Testbase):
             )
             resultatt = json.loads(login_att_response.data)
             tokenatt = resultatt["token"]
-            # Test successful post of a sale
-            response = self.client.post(
-                self.salesurl, headers=dict(
-                    Authorization="Bearer " + tokenatt),
-                data=json.dumps(self.sales_data),
+            # Register attendant 2
+            self.client.post(
+                self.signupurl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.register_data3),
                 content_type='application/json'
             )
 
-            response_data = json.loads(response.data)
-            print(response_data)
+            # Login attendant 2
+            login_att2_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.login_data3),
+                content_type='application/json'
+            )
+            resultatt2 = json.loads(login_att2_response.data)
+            tokenatt2 = resultatt2["token"]
+            # Add a product
+            self.client.post(self.producturl, headers=dict(
+                Authorization="Bearer " + token),
+                data=json.dumps(self.productdata),
+                content_type='application/json')
+            # Add to cart
+            response_add_cart = self.client.post(self.carturl,
+                headers=dict(Authorization="Bearer " + tokenatt),
+                data=json.dumps(self.cart_data),
+                content_type='application/json')
+            result_add_cart=json.loads(response_add_cart.data)
+            self.assertEqual("scarf added to cart",result_add_cart["message"])
+            self.assertEqual(response_add_cart.status_code,201)
+
+            # Test successful post of a sale
+            response=self.client.post(
+                self.salesurl, headers = dict(
+                    Authorization="Bearer " + tokenatt),
+                content_type = 'application/json'
+            )
+
+            response_data=json.loads(response.data)
             self.assertEqual("A sale has been created successfully",
                              response_data["response"]["message"])
             self.assertEqual(response.status_code, 201)
             # Test admin can't post a sale
-            responsec = self.client.post(
+            responsec=self.client.post(
                 self.salesurl, headers=dict(Authorization="Bearer " + token),
-                data=json.dumps(self.sales_data1),
                 content_type='application/json'
             )
 
@@ -56,30 +82,14 @@ class TestSales(Testbase):
                 "Only an attendant is permitted to post sales", response_datac["message"])
             self.assertEqual(responsec.status_code, 401)
             # Test sale data can't be empty
-            responsed = self.client.post(
-                self.salesurl, headers=dict(Authorization="Bearer " + token),
-                data=json.dumps(dict()
-                                ),
-                content_type='application/json'
-            )
-            response_datad = json.loads(responsed.data)
-            self.assertEqual("Fields cannot be empty",
-                             response_datad["message"])
-            self.assertEqual(responsed.status_code, 400)
-            # Test some missing fields
             responsee = self.client.post(
-                self.salesurl, headers=dict(Authorization="Bearer " + token),
-                data=json.dumps(dict(
-                    items_count="",
-                    total_amount=5000
-                )),
+                self.salesurl, headers=dict(
+                    Authorization="Bearer " + tokenatt2),
                 content_type='application/json'
             )
-
             response_datae = json.loads(responsee.data)
             self.assertEqual(
-                "Items_count and total_amount fields can't be empty", response_datae["message"])
-            self.assertEqual(responsee.status_code, 206)
+                "The cart is currently empty,add items to cart to make a sale", response_datae["message"])
 
     def test_get_all_sales(self):
         '''Only an admin can view all sales records'''
@@ -108,13 +118,22 @@ class TestSales(Testbase):
             )
             resultatt = json.loads(login_att_response.data)
             tokenatt = resultatt["token"]
+            # Add a product
+            self.client.post(self.producturl, headers=dict(
+                Authorization="Bearer " + token),
+                data=json.dumps(self.productdata),
+                content_type='application/json')
+            # Add to cart
+            self.client.post(self.carturl,
+                headers=dict(Authorization="Bearer " + tokenatt),
+                data=json.dumps(self.cart_data),
+                content_type='application/json')
 
-            # let attendant post a sale
+            # Let attendant post of a sale
             self.client.post(
-                self.salesurl, headers=dict(
+                self.salesurl, headers = dict(
                     Authorization="Bearer " + tokenatt),
-                data=json.dumps(self.sales_data1),
-                content_type='application/json'
+                content_type = 'application/json'
             )
             # Let admin get all sales
             response = self.client.get(
@@ -131,7 +150,6 @@ class TestSales(Testbase):
     def test_get_sale_by_id(self):
         with self.client:
             # login defailtadmin and register two attendants
-            # login default admin
             login_response = self.client.post(
                 self.loginurl,
                 data=json.dumps(self.default_login),
@@ -170,13 +188,24 @@ class TestSales(Testbase):
             )
             resultatt2 = json.loads(login_att_response2.data)
             tokenatt2 = resultatt2["token"]
+            # Add a product
+            self.client.post(self.producturl, headers=dict(
+                Authorization="Bearer " + token),
+                data=json.dumps(self.productdata),
+                content_type='application/json')
+            # Add to cart
+            self.client.post(self.carturl,
+                headers=dict(Authorization="Bearer " + tokenatt),
+                data=json.dumps(self.cart_data),
+                content_type='application/json')
 
-            # let attendant1 post a sale
-            self.client.post('/api/v1/sales',
-                             headers=dict(Authorization="Bearer " + tokenatt),
-                             data=json.dumps(self.sales_data),
-                             content_type='application/json'
-                             )
+            # Let attendant1 post of a sale
+            self.client.post(
+                self.salesurl, headers = dict(
+                    Authorization="Bearer " + tokenatt),
+                content_type = 'application/json'
+            )
+
             # let the attendant who posted get the sale
             responseatt = self.client.get(
                 self.salesurl+'/1', headers=dict(Authorization="Bearer " + tokenatt))
@@ -193,4 +222,3 @@ class TestSales(Testbase):
             self.assertEqual(
                 "Only an admin or attendant who created this sale are allowed to view it", resultatt2["message"])
             self.assertEqual(responseatt2.status_code, 401)
-           
