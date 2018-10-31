@@ -55,7 +55,7 @@ def get_product_by_id(product_id):
 @product.route('/products/<int:product_id>',methods=['PUT']) 
 @jwt_required
 def edit_product(product_id):
-    '''Only admin can edit a book'''
+    '''Only admin can edit a product'''
     claims = get_jwt_claims()
     admin="admin"
     if claims["role"] == admin:
