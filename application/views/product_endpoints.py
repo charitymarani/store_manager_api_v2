@@ -13,7 +13,7 @@ def post_product():
     data = request.get_json()
     if not data:
         return jsonify({"message": "Fields cannot be empty"}), 400
-    product_id = data.get("product_id")
+    product_code = data.get("product_code")
     name = data.get("name")
     category = data.get("category")
     B_price = data.get("purchase_price")
@@ -22,9 +22,9 @@ def post_product():
     limit = data.get("low_limit")
     desc = data.get("description")
 
-    productinfo = [product_id, name, qty,
+    productinfo = [product_code, name, qty,
                    limit, S_price, category, B_price, desc]
-    product_int = [product_id, B_price, S_price, qty, limit]
+    product_int = [product_code, B_price, S_price, qty, limit]
     check_is_int(product_int)
     exists = list_iterator(productinfo)
     if exists is False:
@@ -34,7 +34,7 @@ def post_product():
     if claims['role'] != admin:
         return jsonify({"message": "Only an admin is permitted to post products"}), 401
     response = jsonify(product_object.put(
-        product_id, name, category, B_price, S_price, qty, limit, desc))
+        product_code, name, category, B_price, S_price, qty, limit, desc))
     response.status_code = 201
     return response
 
@@ -48,18 +48,18 @@ def get_all_products():
     return response
 
 
-@product.route('/products/<int:product_id>', methods=['GET'])
+@product.route('/products/<int:product_code>', methods=['GET'])
 @jwt_required
-def get_product_by_id(product_id):
+def get_product_by_id(product_code):
     '''Endpoint to get product by product id'''
-    response = jsonify(product_object.get_product_by_id(product_id))
+    response = jsonify(product_object.get_product_by_id(product_code))
     response.status_code = 200
     return response
 
 
-@product.route('/products/<int:product_id>', methods=['PUT'])
+@product.route('/products/<int:product_code>', methods=['PUT'])
 @jwt_required
-def edit_product(product_id):
+def edit_product(product_code):
     '''Only admin can edit a product'''
     claims = get_jwt_claims()
     admin = "admin"
@@ -75,7 +75,7 @@ def edit_product(product_id):
         limit = data.get("low_limit")
         desc = data.get("description")
 
-        product = product_object.get_product_by_id(product_id)
+        product = product_object.get_product_by_id(product_code)
         if "message" in product:
             return jsonify({"message": "Product does not exist"})
         if not name and not category and not B_price and not S_price and not qty and not limit and not desc:
@@ -96,20 +96,20 @@ def edit_product(product_id):
             desc = product["description"]
 
         response = jsonify(product_object.update_product(
-            product_id, name, category, B_price, S_price, qty, limit, desc))
+            product_code, name, category, B_price, S_price, qty, limit, desc))
 
         response.status_code = 200
         return response
     return jsonify({"message": "Only admin can edit a product"}), 401
 
 
-@product.route('/products/<int:product_id>', methods=['DELETE'])
+@product.route('/products/<int:product_code>', methods=['DELETE'])
 @jwt_required
-def delete_product(product_id):
+def delete_product(product_code):
     claims = get_jwt_claims()
     admin = "admin"
     if claims["role"] == admin:
-        result = jsonify(product_object.delete_product(product_id))
+        result = jsonify(product_object.delete_product(product_code))
         result.status_code = 200
         return result
     return jsonify({"message": "Only admin can delete a product"}), 401

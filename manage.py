@@ -67,7 +67,7 @@ class DbSetup(object):
     def tables(self):
         
         query1 = """CREATE TABLE IF NOT EXISTS products (
-            product_id integer PRIMARY KEY,
+            product_code integer PRIMARY KEY,
             name varchar(200) NOT NULL,
             purchase_price integer NOT NULL,
             category varchar(200) NOT NULL,

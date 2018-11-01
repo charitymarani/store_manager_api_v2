@@ -39,7 +39,7 @@ class TestProducts(Testbase):
 
             response_data = json.loads(response.data)
             self.assertEqual(
-                "scarf, Posted!", response_data["response"]["message"])
+                "scarf, Posted!", response_data["message"])
             self.assertEqual(response.status_code, 201)
             # Test post product with existing product id
             responsez = self.client.post(
@@ -51,7 +51,7 @@ class TestProducts(Testbase):
 
             response_dataz = json.loads(responsez.data)
             self.assertEqual(
-                "The product already exists,you can update product quantity instead", response_dataz["response"]["message"])
+                "The product already exists,you can update product quantity instead", response_dataz["message"])
 
             # Test empty data
             response1 = self.client.post(
@@ -138,7 +138,7 @@ class TestProducts(Testbase):
                 self.producturl+'/700', headers=dict(Authorization="Bearer " + token))
             resp = json.loads(response1.data)
             self.assertEqual(
-                "product_id does not exist in our records", resp["message"])
+                "product_code does not exist in our records", resp["message"])
 
     def test_edit_product(self):
         with self.client:
@@ -167,7 +167,7 @@ class TestProducts(Testbase):
             response_data = json.loads(response.data)
             self.assertEqual(response.status_code, 200)
             self.assertEqual("Product updated successfully!",
-                             response_data["response"]["message"])
+                             response_data["message"])
             # Test empty data
             response1 = self.client.put(
                 self.producturl+'/140', data=json.dumps({}),
@@ -244,14 +244,14 @@ class TestProducts(Testbase):
                 self.producturl+'/140', headers=dict(Authorization="Bearer " + token))
             result = json.loads(response.data)
             self.assertEqual("product has been deleted!",
-                             result["response"]["message"])
+                             result["message"])
             self.assertEqual(response.status_code, 200)
             # Test nonexistent product
             response2 = self.client.delete(
                 self.producturl+'/700', headers=dict(Authorization="Bearer " + token))
             result2 = json.loads(response2.data)
             self.assertEqual(
-                "product_id does not exist in our records", result2["message"])
+                "product_code does not exist in our records", result2["message"])
             # Test attendant cannot delete product
             # Register attendant
             self.client.post(

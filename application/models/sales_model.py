@@ -25,7 +25,7 @@ class Sales(BaseModel):
         self.cursor.execute(
             "DELETE FROM carts WHERE created_by=%s;", (created_by,))
         self.conn.commit()
-        return dict(response=dict(message="A sale has been created successfully"), status_code=201)
+        return dict(message="A sale has been created successfully", status_code=201)
 
     def get_all_sales(self):
         '''get all sales'''

@@ -69,7 +69,7 @@ class TestSales(Testbase):
 
             response_data=json.loads(response.data)
             self.assertEqual("A sale has been created successfully",
-                             response_data["response"]["message"])
+                             response_data["message"])
             self.assertEqual(response.status_code, 201)
             # Test admin can't post a sale
             responsec=self.client.post(

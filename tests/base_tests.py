@@ -95,7 +95,7 @@ class Testbase(unittest.TestCase):
                                   password='1234admin'
                                   )
         self.productdata = dict(
-            product_id=120,
+            product_code=120,
             name='scarf',
             category='clothes',
             purchase_price=1000,
@@ -106,7 +106,7 @@ class Testbase(unittest.TestCase):
 
         )
         self.productdata2 = dict(
-            product_id=130,
+            product_code=130,
             name='pen',
             category='shoes',
             purchase_price=1000,
@@ -117,7 +117,7 @@ class Testbase(unittest.TestCase):
 
         )
         self.productdata3 = dict(
-            product_id=140,
+            product_code=140,
             name='phone',
             category='electronics',
             purchase_price=1000,
@@ -128,7 +128,7 @@ class Testbase(unittest.TestCase):
 
         )
         self.productdata4 = dict(
-            product_id=150,
+            product_code=150,
             name='earphones',
             category='electronics',
             purchase_price=1000,
