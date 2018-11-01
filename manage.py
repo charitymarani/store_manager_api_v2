@@ -6,7 +6,6 @@ from flask import Flask
 from werkzeug.security import generate_password_hash
 from instance.config import app_config
 
-
 class DbSetup(object):
     '''class to setup db connection'''
 
@@ -14,7 +13,7 @@ class DbSetup(object):
 
         self.connection_string = app_config[config_name].CONNECTION_STRING
         self.conn = psycopg2.connect(self.connection_string)
-
+        
     def connection(self):
 
         return self.conn
@@ -54,7 +53,7 @@ class DbSetup(object):
             curr.execute(query, ('Charity', 'defaultadmin',
                                  'admin@gmail.com', pwh, 'admin'))
             conn.commit()
-
+     
     def cursor(self):
         '''method to allow objects execute SQL querries on the db instance'''
         cur = self.connection().cursor(cursor_factory=RealDictCursor)
@@ -66,7 +65,7 @@ class DbSetup(object):
         conn.commit()
 
     def tables(self):
-
+        
         query1 = """CREATE TABLE IF NOT EXISTS products (
             product_id integer PRIMARY KEY,
             name varchar(200) NOT NULL,

@@ -8,12 +8,9 @@ class Config(object):
     DEBUG = True
     SECRET_KEY = os.urandom(24)
     CONNECTION_STRING = os.getenv('CONNECTION_STRING')
-
-
 class Development(Config):
     '''Configurations for development'''
     DEBUG = True
-
 
 class Testing(Config):
     '''configurations for testing with a separate test database'''

@@ -15,14 +15,14 @@ class Products(BaseModel):
             return dict(response=resp, status_code=409)
         date = datetime.datetime.now()
         query = """INSERT INTO products(product_id, name, category, purchase_price, selling_price, quantity, low_limit, description,date_created)
-                VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s);"""
+
         self.cursor.execute(query, (product_id, name, category, purchase_price,
                                     selling_price, quantity, low_limit, description, date))
 
         self.conn.commit()
 
         return dict(response=dict(message=name + ", Posted!"), status_code=201)
-
+    
     def get_all_products(self):
         '''get all products'''
         result = self.select_no_condition('products', 'product_id')

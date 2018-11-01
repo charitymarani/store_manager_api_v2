@@ -2,6 +2,7 @@
 '''application/__init__.py'''
 import os
 from flask import Flask, jsonify
+
 from flask_jwt_extended import JWTManager
 from instance.config import app_config
 from .views.user_endpoints import auth
@@ -59,6 +60,7 @@ def create_app(config_name):
 
     my_db = DbSetup(config_name)
     my_db.create_tables()
+
     my_db.create_default_admin()
 
     return app

@@ -8,9 +8,8 @@ from manage import DbSetup
 CURRENT_ENVIRONMENT = os.getenv('ENV')
 CONN_STRING = app_config[CURRENT_ENVIRONMENT].CONNECTION_STRING
 
-
 class BaseModel(object):
-
+    
     def __init__(self):
         '''open database connections'''
         self.conn = psycopg2.connect(CONN_STRING)

@@ -4,10 +4,7 @@ from ..models import product_model
 from ..utils import list_iterator, check_is_int
 
 product = Blueprint('product', __name__, url_prefix='/api/v2')
-
-
 product_object = product_model.Products()
-
 
 @product.route('/products', methods=['POST'])
 @jwt_required
@@ -29,7 +26,6 @@ def post_product():
                    limit, S_price, category, B_price, desc]
     product_int = [product_id, B_price, S_price, qty, limit]
     check_is_int(product_int)
-
     exists = list_iterator(productinfo)
     if exists is False:
         return jsonify({"message": "Some required fields are missing!"}), 206
@@ -64,7 +60,7 @@ def get_product_by_id(product_id):
 @product.route('/products/<int:product_id>', methods=['PUT'])
 @jwt_required
 def edit_product(product_id):
-    '''Only admin can edit a book'''
+    '''Only admin can edit a product'''
     claims = get_jwt_claims()
     admin = "admin"
     if claims["role"] == admin:
@@ -117,3 +113,4 @@ def delete_product(product_id):
         result.status_code = 200
         return result
     return jsonify({"message": "Only admin can delete a product"}), 401
+

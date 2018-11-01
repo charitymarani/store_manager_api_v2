@@ -14,7 +14,7 @@ before_script:
 
 env:
  
- - DATABASE_URL="dbname='store_manager' user='postgres' host='localhost' password='chacha'"
+ - DATABASE_URL="dbname='test_store_db' user='postgres' host='localhost' password='chacha'"
 script:	
  - nosetests tests --with-coverage
 after_success:

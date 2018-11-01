@@ -33,7 +33,7 @@ def register():
 
     userinfo = [username, name, role, password, confirm_password, email]
 
-    exists = list_iterator(userinfo)
+    exists=list_iterator(userinfo)
     if exists is False:
         return jsonify({"message": "Make sure all fields have been filled out"}), 206
     if len(password) < 4:
