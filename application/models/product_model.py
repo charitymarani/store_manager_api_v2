@@ -1,23 +1,23 @@
 '''/models/product_model.py'''
+import datetime
 from .base_model import BaseModel
 
 
 class Products(BaseModel):
     def put(self, product_id, name, category, purchase_price, selling_price, quantity, low_limit, description):
         '''Add a new product'''
-        # self.cursor.execute("SELECT * FROM products WHERE product_id = (%s);", (product_id, ))
         result = self.select_with_condition(
             'products', 'product_id', product_id)
-        result2=self.select_with_condition('products','name',name)
+        result2 = self.select_with_condition('products', 'name', name)
         if "message" not in result or "message" not in result2:
             resp = dict(
                 message="The product already exists,you can update product quantity instead")
             return dict(response=resp, status_code=409)
-            
-        query = """INSERT INTO products(product_id, name, category, purchase_price, selling_price, quantity, low_limit, description)
-                VALUES(%s, %s, %s, %s, %s, %s, %s, %s);"""
+        date = datetime.datetime.now()
+        query = """INSERT INTO products(product_id, name, category, purchase_price, selling_price, quantity, low_limit, description,date_created)
+
         self.cursor.execute(query, (product_id, name, category, purchase_price,
-                                    selling_price, quantity, low_limit, description))
+                                    selling_price, quantity, low_limit, description, date))
 
         self.conn.commit()
 
@@ -44,12 +44,13 @@ class Products(BaseModel):
         self.conn.commit()
 
         return dict(response=dict(message="Product updated successfully!"), status_code=200)
-    def delete_product(self,product_id):
+
+    def delete_product(self, product_id):
         result = self.select_with_condition(
             'products', 'product_id', product_id)
         if "message" in result:
             return result
-        self.cursor.execute("DELETE FROM products WHERE product_id = %s", (product_id,))
+        self.cursor.execute(
+            "DELETE FROM products WHERE product_id = %s", (product_id,))
         self.conn.commit()
         return dict(response=dict(message="product has been deleted!"), status_code=200)
-            

@@ -8,3 +8,7 @@ def check_is_int(list_):
             return False
 
 
+def check_is_int(list_):
+    for listitem in list_:
+        if not isinstance(listitem, int):
+            return False

@@ -1,7 +1,7 @@
 '''/models.usermodel.py'''
+import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from .base_model import BaseModel
-# from ..utils import select_with_condition, select_no_condition
 
 
 class User(BaseModel):
@@ -9,6 +9,7 @@ class User(BaseModel):
 
     def put(self, name, username, email, password, role):
         '''Create a new user account'''
+        date=datetime.datetime.now()
         pw_hash = generate_password_hash(password)
         result = self.select_with_condition('users', 'username', username)
         # check if username exists
@@ -20,9 +21,9 @@ class User(BaseModel):
         if "message" not in result2:
             return dict(message="Email already in use. Try a different one.", error=409)
 
-        query = """INSERT INTO users(name, username, email, password,role)
-                 VALUES(%s, %s, %s, %s, %s);"""
-        self.cursor.execute(query, (name, username, email, pw_hash, role))
+        query = """INSERT INTO users(name, username, email, password,role, date_created)
+                 VALUES(%s, %s, %s, %s, %s,%s);"""
+        self.cursor.execute(query, (name, username, email, pw_hash, role,date))
         self.conn.commit()
         # check that user was signed up
         result3 = self.select_with_condition('users', 'username', username)
@@ -56,3 +57,18 @@ class User(BaseModel):
         '''get user details by username'''
         result = self.select_with_condition('users', 'username', username)
         return result
+    def promote_demote_user(self,username):
+        user=self.get_user_by_username(username)
+        admin='admin'
+        attendant='attendant'
+        if user["role"]==admin:
+            role=attendant 
+        elif user["role"]==attendant:
+            role=admin
+        query="""UPDATE users SET role=%s WHERE username=%s"""
+        self.cursor.execute(query,(role,username))
+        self.conn.commit()
+        return{"message":"User role updated!"}
+    
+
+        
