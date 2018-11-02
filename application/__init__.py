@@ -62,9 +62,9 @@ def create_app(config_name):
     app.register_error_handler(405, method_not_allowed)
     app.register_error_handler(400, bad_request)
 
-    # @app.errorhandler(Exception)
-    # def unhandled_exception(e):
-    #     return jsonify(dict(error='Your request cannot be proccessed. the server experienced an internal error')), 500
+    @app.errorhandler(Exception)
+    def unhandled_exception(e):
+        return jsonify(dict(error='Your request cannot be proccessed. the server experienced an internal error')), 500
 
     my_db = DbSetup(config_name)
     my_db.create_tables()
