@@ -32,7 +32,6 @@ Store Manager api is a simple flask api that powers  a web application that help
 
 
 
-
 ### Prerequisites
 ```
   * pip
