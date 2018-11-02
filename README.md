@@ -22,6 +22,13 @@ Store Manager api is a simple flask api that powers  a web application that help
 | POST     | /api/v2/sales        | Post a new sale record     |
 | GET     | /api/v2/sales        | Gets all sale records     |
 | GET     | /api/v2/sales/saleid       |Gets a single sale by sale id       |
+| POST     | /api/v2/carts      |Add item to cart       |
+| PUT    | /api/v2/carts/cart_item_id       |Update a cart item      |
+| GET     | /api/v2/carts      |Get all items in the cart       |
+| GET     | /api/v2/carts/cart_item_id       |Gets a single cart item      |
+| DELETE    | /api/v2/carts       |Delete entire cart      |
+| DELETE    | /api/v2/carts/cart_item_id      |Delete single cart item      |
+
 
 
 
@@ -85,3 +92,15 @@ To run the tests use the command:
 nosetests tests
 
 ```
+### Deployment
+Coming soon
+
+### Documentation
+Coming soon
+
+### Built with
+
+Flask, a python framework
+
+### Authors
+[Charity Marani](https://github.com/charitymarani)

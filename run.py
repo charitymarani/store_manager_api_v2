@@ -16,5 +16,4 @@ def home():
     return "<h2>Welcome to store manager api version 2</h2>"
 
 if __name__ == "__main__":
-    # db.drop_tables()
     app.run()

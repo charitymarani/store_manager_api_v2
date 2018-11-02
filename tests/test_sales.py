@@ -205,6 +205,7 @@ class TestSales(Testbase):
                     Authorization="Bearer " + tokenatt),
                 content_type = 'application/json'
             )
+
             # let the attendant who posted get the sale
             responseatt = self.client.get(
                 self.salesurl+'/1', headers=dict(Authorization="Bearer " + tokenatt))

@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, Blueprint
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token, get_raw_jwt, get_jwt_claims, get_jwt_identity)
 from ..models import user_model, blacklist_model
-from ..utils import list_iterator
+from ..utils import list_iterator,validate_password
 
 auth = Blueprint('auth', __name__, url_prefix='/api/v2')
 
@@ -33,13 +33,12 @@ def register():
 
     userinfo = [username, name, role, password, confirm_password, email]
 
-    exists=list_iterator(userinfo)
+    exists = list_iterator(userinfo)
     if exists is False:
         return jsonify({"message": "Make sure all fields have been filled out"}), 206
-    if len(password) < 4:
-        return jsonify({"message": "The password is too short,minimum length is 4"}), 400
-    if confirm_password != password:
-        return jsonify({"message": "The passwords you entered don't match"}), 400
+    validate=validate_password(password,confirm_password)
+    if "message" in validate:
+        return jsonify(validate), 400
     match = re.match(
         r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
     if match is None:
@@ -67,7 +66,7 @@ def login():
     user = user_object.get_user_by_username(username)
     if authorize == "True":
         access_token = create_access_token(identity=user)
-        return jsonify(dict(token=access_token, message="Login successful!Welcome back, " + username + "!")), 200
+        return jsonify(dict(token=access_token, message="Login successful!Welcome, " + username + "!")), 200
 
     response = jsonify(authorize)
     response.status_code = 401

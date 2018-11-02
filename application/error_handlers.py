@@ -1,5 +1,6 @@
 from flask import jsonify
 
+
 def resource_not_found(error):
     """ handles resource not found"""
     response = jsonify(
@@ -15,9 +16,9 @@ def method_not_allowed(error):
     response.status_code = 405
     return response
 
+
 def bad_request(error):
     """handles any 400 error."""
     response = jsonify({"error": "Incorrect data input format,bad request"})
     response.status_code = 400
     return response
-

@@ -10,6 +10,7 @@ from instance.config import app_config
 class Testbase(unittest.TestCase):
     db = DbSetup(config_name='testing')
     db.drop_tables()
+
     def setUp(self):
         '''Setup function for tests'''
         self.app = create_app('testing')
@@ -24,76 +25,79 @@ class Testbase(unittest.TestCase):
         self.logouturl = '/api/v2/logout'
         self.allusersurl = '/api/v2/users'
         self.producturl = '/api/v2/products'
-        self.salesurl='/api/v2/sales'
-        self.carturl='/api/v2/carts'
+        self.salesurl = '/api/v2/sales'
+        self.carturl = '/api/v2/carts'
 
         self.register_data = dict(
             name='charity marani',
             email='nicole@gmail.com',
             role='attendant',
             username='nicole',
-            password='1234',
-            confirm_password='1234'
+            password='@123User',
+            confirm_password='@123User'
         )
         self.login_data = dict(username='nicole',
-                               password='1234'
+                               password='@123User'
                                )
         self.register_data1 = dict(
             name='charity marani',
             email='kim@gmail.com',
             role='attendant',
             username='kim',
-            password='1234',
-            confirm_password='1234'
+            password='@123User',
+            confirm_password='@123User'
         )
         self.login_data1 = dict(username='kim',
-                                password='1234'
+                                password='@123User'
                                 )
         self.register_data2 = dict(
             name='charity marani',
             email='mose@gmail.com',
             role='attendant',
             username='mose',
-            password='1234',
-            confirm_password='1234'
+            password='@123User',
+            confirm_password='@123User'
         )
         self.login_data2 = dict(username='mose',
-                                password='1234'
+                                password='@123User'
                                 )
-        self.register_data3= dict(
+        self.register_data3 = dict(
             name='charity marani',
             email='geb@gmail.com',
             role='attendant',
             username='geb',
-            password='1234',
-            confirm_password='1234'
+            password='@123User',
+            confirm_password='@123User'
         )
         self.register_data4 = dict(
             name='charity marani',
             email='nicoleb@gmail.com',
             role='attendant',
             username='nicoleb',
-            password='1234',
-            confirm_password='1234'
+            password='@123User',
+            confirm_password='@123User'
         )
         self.register_data5 = dict(
             name='charity marani',
             email='aim@gmail.com',
             role='attendant',
             username='aim',
-            password='1234',
-            confirm_password='1234'
+            password='@123User',
+            confirm_password='@123User'
         )
 
         self.login_data4 = dict(username='nicoleb',
-                               password='1234'
-                               )
-        self.login_data3 = dict(username='geb',
-                                password='1234'
+                                password='@123User'
                                 )
+        self.login_data3 = dict(username='geb',
+                                password='@123User'
+                                )
+        self.login_data5=dict(username='aim',
+            password='@123User')
         self.default_login = dict(username='defaultadmin',
                                   password='1234admin'
                                   )
+
         self.productdata = dict(
             product_code=120,
             name='scarf',
@@ -138,35 +142,33 @@ class Testbase(unittest.TestCase):
             description='communication device'
 
         )
-        
+
         self.edit_data = dict(quantity=70,
                               low_limit=10,
                               description='wide based heel')
         self.empty_data_fields = dict(name="",
                                       category=""
                                       )
-        self.cart_data=dict(
-                    quantity=4,
-                    cart_item="scarf"
-                )
-        self.cart_data1=dict(
-                    quantity=4,
-                    cart_item="pen"
-                )
-        self.cart_data2=dict(
-                    quantity=4,
-                    cart_item="earphones"
-                )
-        self.no_cart_item=dict(
-                    quantity=4,
-                    cart_item="book"
-                )
-   
-                
-
+        self.cart_data = dict(
+            quantity=4,
+            cart_item="scarf"
+        )
+        self.cart_data1 = dict(
+            quantity=4,
+            cart_item="pen"
+        )
+        self.cart_data2 = dict(
+            quantity=4,
+            cart_item="earphones"
+        )
+        self.no_cart_item = dict(
+            quantity=4,
+            cart_item="book"
+        )
 
     def tearDown(self):
         """removes the db and the context"""
         with self.app_context:
             self.app_context.pop()
-            
+        
+        

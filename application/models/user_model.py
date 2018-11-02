@@ -11,7 +11,7 @@ class User(BaseModel):
         '''Create a new user account'''
         date=datetime.datetime.now()
         pw_hash = generate_password_hash(password)
-        result = self.select_with_condition('users', 'username', username)
+        result = self.select_with_condition('users', 'username', username) 
         # check if username exists
         if "message" not in result:
             return dict(message="Username already exists. Try a different one.", error=409)
@@ -25,12 +25,8 @@ class User(BaseModel):
                  VALUES(%s, %s, %s, %s, %s,%s);"""
         self.cursor.execute(query, (name, username, email, pw_hash, role,date))
         self.conn.commit()
-        # check that user was signed up
-        result3 = self.select_with_condition('users', 'username', username)
-        if "message" in result3:
-            return dict(message="Failed to signup, try again.", error=404)
 
-        return dict(message="Welcome " + username + "!")
+        return dict(message=username+' added successfully')
 
     def verify_password(self, username, password):
         '''verify the password a user enters while logging in'''

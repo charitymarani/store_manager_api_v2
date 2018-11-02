@@ -22,7 +22,7 @@ class TestAuthentication(Testbase):
         )
         response_data1 = json.loads(response.data)
         self.assertEqual(
-            "Welcome nicoleb!", response_data1["message"])
+            "nicoleb added successfully", response_data1["message"])
         self.assertEqual(response.status_code, 201)
         # Test registration with nonexistent role
 
@@ -33,8 +33,8 @@ class TestAuthentication(Testbase):
                 email='nicoleb@gmail.com',
                 role='sWEEper',
                 username='nicoleb',
-                password='1234',
-                confirm_password='1234'
+                password='@123User',
+                confirm_password='@123User'
             )),
             content_type='application/json'
         )
@@ -50,8 +50,8 @@ class TestAuthentication(Testbase):
                 email='chachagmail.com',
                 role='attendant',
                 username='chacha',
-                password='1234',
-                confirm_password='1234'
+                password='@123User',
+                confirm_password='@123User'
             )),
             content_type='application/json'
         )
@@ -69,7 +69,7 @@ class TestAuthentication(Testbase):
         my_data = json.loads(result.data)
         self.assertEqual(result.status_code, 400)
         self.assertEqual(
-            "The password is too short,minimum length is 4", my_data["message"])
+            "The password is too short,minimum length is 6", my_data["message"])
 
         # test unmatching passwords
         result2 = self.client.post(self.signupurl, headers=dict(Authorization="Bearer " + token),
@@ -81,6 +81,26 @@ class TestAuthentication(Testbase):
         self.assertEqual(result2.status_code, 400)
         self.assertEqual(
             "The passwords you entered don't match", my_data2["message"])
+         #test weak password
+        result_pass = self.client.post(self.signupurl,headers=dict(Authorization="Bearer " + token),
+                                     content_type="application/json",
+                                     data=json.dumps({"name": "velma", "username": "vemy",
+                                                      "email": "vemy@gmail.com","role":"attendant", "password": "123456",
+                                                      "confirm_password": "123456"}))
+        data_pass= json.loads(result_pass.data)
+        self.assertEqual(result_pass.status_code, 400)
+        self.assertEqual("password must contain a mix of upper and lowercase letters",
+                         data_pass["message"])
+        #test weak password
+        result_pass2 = self.client.post(self.signupurl,headers=dict(Authorization="Bearer " + token),
+                                     content_type="application/json",
+                                     data=json.dumps({"name": "nanje", "username": "nanje",
+                                                      "email": "nanje@gmail.com","role":"attendant", "password": "Testing",
+                                                      "confirm_password": "Testing"}))
+        data_pass2 = json.loads(result_pass2.data)
+        self.assertEqual(result_pass2.status_code, 400)
+        self.assertEqual("password must contain atleast one numeric or special character",
+                         data_pass2["message"])
         # test for missing fields
         result3 = self.client.post(self.signupurl, headers=dict(Authorization="Bearer " + token),
                                    content_type="application/json",
@@ -88,7 +108,6 @@ class TestAuthentication(Testbase):
                                                     "email": "gebby@to.cm", "password": "Test123",
                                                     "confirm_password": "Test123", "role": "attendant"}))
         my_data3 = json.loads(result3.data)
-        print(my_data3)
         self.assertEqual(result3.status_code, 206)
         self.assertEqual(
             "Make sure all fields have been filled out", my_data3["message"])
@@ -107,8 +126,8 @@ class TestAuthentication(Testbase):
                 email='hez@gmail.com',
                 role='attendant',
                 username='nicoleb',
-                password='1234',
-                confirm_password='1234'
+                password='@123User',
+                confirm_password='@123User'
             )),
             content_type='application/json'
         )
@@ -123,8 +142,8 @@ class TestAuthentication(Testbase):
                 email='nicoleb@gmail.com',
                 role='attendant',
                 username='jerry',
-                password='1234',
-                confirm_password='1234'
+                password='@123User',
+                confirm_password='@123User'
             )),
             content_type='application/json'
         )
@@ -144,7 +163,7 @@ class TestAuthentication(Testbase):
             token1 = response_data1["token"]
 
             self.assertEqual(
-                "Login successful!Welcome back, nicoleb!", response_data1["message"])
+                "Login successful!Welcome, nicoleb!", response_data1["message"])
             self.assertEqual(response.status_code, 200)
             # Test attendant can't register user
             responsea = self.client.post(
@@ -173,7 +192,7 @@ class TestAuthentication(Testbase):
                 self.loginurl,
                 data=json.dumps(dict(
                     username='',
-                    password='1234'
+                    password='@123User'
 
                 )),
                 content_type='application/json'
@@ -201,7 +220,7 @@ class TestAuthentication(Testbase):
                 self.loginurl,
                 data=json.dumps(dict(
                     username='ruth',
-                    password='1234'
+                    password='@123User'
 
                 )),
                 content_type='application/json'

@@ -10,12 +10,10 @@ class Products(BaseModel):
             'products', 'product_code', product_code)
         result2 = self.select_with_condition('products', 'name', name)
         if "message" not in result or "message" not in result2:
-            return dict(
-                message="The product already exists,you can update product quantity instead",status_code=409)
+            return dict(message="The product already exists,you can update product quantity instead", status_code=409)
         date = datetime.datetime.now()
         query = """INSERT INTO products(product_code, name, category, purchase_price, selling_price, quantity, low_limit, description,date_created)
-                   VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s);"""
-
+                VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s);"""
         self.cursor.execute(query, (product_code, name, category, purchase_price,
                                     selling_price, quantity, low_limit, description, date))
 
