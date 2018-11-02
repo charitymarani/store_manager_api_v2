@@ -116,18 +116,107 @@ class TestCart(Testbase):
                 content_type='application/json')
             # Add to cart
             self.client.post(self.carturl,
-                            headers=dict(Authorization="Bearer " + tokenatt),
-                            data=json.dumps(self.cart_data2),
-                            content_type='application/json')
+                             headers=dict(Authorization="Bearer " + tokenatt),
+                             data=json.dumps(self.cart_data2),
+                             content_type='application/json')
             # Get all cart
             response_get_cart = self.client.get(self.carturl,
                                                 headers=dict(Authorization="Bearer " + tokenatt))
             self.assertEqual(response_get_cart.status_code, 200)
-            #Get empty cart
+            # Get empty cart
             response_get_empty_cart = self.client.get(self.carturl,
-                                                headers=dict(Authorization="Bearer " + tokenatt2))
-            result_get_empty_cart=json.loads(response_get_empty_cart.data)
+                                                      headers=dict(Authorization="Bearer " + tokenatt2))
+            result_get_empty_cart = json.loads(response_get_empty_cart.data)
 
-            self.assertEqual("The cart is currently empty",result_get_empty_cart["message"])
+            self.assertEqual("The cart is currently empty",
+                             result_get_empty_cart["message"])
 
-    
+    def test_delete_cart(self):
+        with self.client:
+            # login default admin
+            login_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.default_login),
+                content_type='application/json'
+            )
+            result = json.loads(login_response.data)
+
+            token = result["token"]
+            # Register attendant
+            self.client.post(
+                self.signupurl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.register_data2),
+                content_type='application/json'
+            )
+
+            # Login attendant
+            login_att_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.login_data2),
+                content_type='application/json'
+            )
+            resultatt = json.loads(login_att_response.data)
+            tokenatt = resultatt["token"]
+            # Add a product
+            self.client.post(self.producturl, headers=dict(
+                Authorization="Bearer " + token),
+                data=json.dumps(self.productdata4),
+                content_type='application/json')
+            # Add to cart
+            self.client.post(self.carturl,
+                             headers=dict(Authorization="Bearer " + tokenatt),
+                             data=json.dumps(self.cart_data2),
+                             content_type='application/json')
+            # Delete cart
+            response_delete = self.client.delete(
+                self.carturl, headers=dict(Authorization="Bearer " + tokenatt))
+            result_delete = json.loads(response_delete.data)
+            self.assertEqual("Cart has been deleted!",
+                             result_delete["message"])
+            self.assertEqual(response_delete.status_code, 200)
+
+    def test_update_cart(self):
+        with self.client:
+            # login default admin
+            login_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.default_login),
+                content_type='application/json'
+            )
+            result = json.loads(login_response.data)
+
+            token = result["token"]
+            # Register attendant
+            self.client.post(
+                self.signupurl, headers=dict(Authorization="Bearer " + token),
+                data=json.dumps(self.register_data2),
+                content_type='application/json'
+            )
+
+            # Login attendant
+            login_att_response = self.client.post(
+                self.loginurl,
+                data=json.dumps(self.login_data2),
+                content_type='application/json'
+            )
+            resultatt = json.loads(login_att_response.data)
+            tokenatt = resultatt["token"]
+            # Add a product
+            self.client.post(self.producturl, headers=dict(
+                Authorization="Bearer " + token),
+                data=json.dumps(self.productdata4),
+                content_type='application/json')
+            # Add to cart
+            self.client.post(self.carturl,
+                             headers=dict(Authorization="Bearer " + tokenatt),
+                             data=json.dumps(self.cart_data2),
+                             content_type='application/json')
+            # Update cart
+            response_delete = self.client.put(self.carturl+'/1', headers=dict(Authorization="Bearer " + tokenatt), data=json.dumps({"quantity": 5}),
+                                              content_type='application/json')
+            result_delete = json.loads(response_delete.data)
+            self.assertEqual("Cart item updated successfully!",
+                             result_delete["message"])
+            self.assertEqual(response_delete.status_code, 200)
+
+

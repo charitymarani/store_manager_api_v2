@@ -1,6 +1,10 @@
 '''/models/sales_model.py'''
 import datetime
+import os
 from .base_model import BaseModel
+from flask_mail import Message ,Mail
+
+mail=Mail()
 
 
 class Sales(BaseModel):
@@ -22,10 +26,19 @@ class Sales(BaseModel):
             self.cursor.execute(
                 query, (created_by, cart_item, count, price, date_created))
             self.conn.commit()
+            product_quantity=self.select_with_condition('products','name',cart_item)['quantity']
+            limit=self.select_with_condition('products','name',cart_item)['low_limit']
+            if int(product_quantity)<=int(limit):
+                email='storemanagerapi123@gmail.com'
+                msg = Message('{} is low in inventory'.format(cart_item),recipients = [email])
+                msg.body='{} is very low in inventory.Current quantity is {}.Please add more stock.'.format(cart_item,product_quantity)
+                mail.send(msg)
         self.cursor.execute(
             "DELETE FROM carts WHERE created_by=%s;", (created_by,))
         self.conn.commit()
-        return dict(message="A sale has been created successfully", status_code=201)
+        self.cursor.execute("ALTER SEQUENCE carts_cart_item_id_seq RESTART WITH 1")
+        self.conn.commit()
+        return dict(message="A sale has been created successfully",status_code=201)
 
     def get_all_sales(self):
         '''get all sales'''

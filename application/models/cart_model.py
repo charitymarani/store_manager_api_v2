@@ -63,7 +63,7 @@ class Carts(BaseModel):
         item = self.get_cart_item_by_id(cart_item_id)
         item_name = item["cart_item"]
         price = self.select_with_condition(
-            'products', 'name', item_name)["price"]
+            'products', 'name', item_name)["selling_price"]
         new_price = count*price
         query = """UPDATE carts
                   SET count=%s,price=%s
@@ -89,16 +89,14 @@ class Carts(BaseModel):
         self.cursor.execute(
             "DELETE FROM carts WHERE cart_item_id = %s;", (cart_item_id,))
         self.conn.commit()
-        self.cursor.execute("ALTER SEQUENCE carts_cart_item_id_seq RESTART WITH 0;")
-        self.conn.commit()
         return dict(message="Cart item has been deleted!", status_code=200)
 
     def delete_cart(self, created_by):
         cart = self.get_all_cart_items(created_by)
-
-        for i in cart:
+        for i in range(len(cart)):
             item_id = cart[i]["cart_item_id"]
             self.delete_cart_item(item_id)
-        self.cursor.execute("ALTER SEQUENCE carts_cart_item_id_seq RESTART WITH 0;")
+        self.conn.commit()
+        self.cursor.execute("ALTER SEQUENCE carts_cart_item_id_seq RESTART WITH 1")
         self.conn.commit()
         return dict(message="Cart has been deleted!", status_code=200)

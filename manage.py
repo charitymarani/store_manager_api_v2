@@ -6,6 +6,7 @@ from flask import Flask
 from werkzeug.security import generate_password_hash
 from instance.config import app_config
 
+
 class DbSetup(object):
     '''class to setup db connection'''
 
@@ -13,7 +14,7 @@ class DbSetup(object):
 
         self.connection_string = app_config[config_name].CONNECTION_STRING
         self.conn = psycopg2.connect(self.connection_string)
-        
+
     def connection(self):
 
         return self.conn
@@ -32,12 +33,18 @@ class DbSetup(object):
         table3 = """DROP TABLE IF EXISTS users CASCADE"""
         table4 = """DROP TABLE IF EXISTS blacklist CASCADE"""
 
-        conn = self.connection()
-        curr = self.cursor()
+        conn = psycopg2.connect(self.connection_string)
+        curr = conn.cursor()
         queries = [table1, table2, table3, table4]
         for query in queries:
             curr.execute(query)
         conn.commit()
+        # conn = self.connection()
+        # curr = self.cursor()
+        # queries = [table1, table2, table3, table4]
+        # for query in queries:
+        #     curr.execute(query)
+        # conn.commit()
 
     def create_default_admin(self):
         conn = self.connection()
@@ -53,7 +60,7 @@ class DbSetup(object):
             curr.execute(query, ('Charity', 'defaultadmin',
                                  'admin@gmail.com', pwh, 'admin'))
             conn.commit()
-     
+
     def cursor(self):
         '''method to allow objects execute SQL querries on the db instance'''
         cur = self.connection().cursor(cursor_factory=RealDictCursor)
@@ -65,7 +72,7 @@ class DbSetup(object):
         conn.commit()
 
     def tables(self):
-        
+
         query1 = """CREATE TABLE IF NOT EXISTS products (
             product_code integer PRIMARY KEY,
             name varchar(200) NOT NULL,

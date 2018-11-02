@@ -1,6 +1,7 @@
 import json
 from .base_tests import Testbase
 
+
 class TestErrors(Testbase):
     def login_default_admin(self):
 
@@ -10,7 +11,7 @@ class TestErrors(Testbase):
         token = result["token"]
 
         return token
-      
+
     def test_404(self):
         with self.client:
             response = self.client.get('/api/v2/charity')
@@ -28,4 +29,3 @@ class TestErrors(Testbase):
             self.assertEqual(response.status_code, 405)
             self.assertEqual(
                 'Method not allowed, ensure you enter the correct method and try again', result['error'])
-
