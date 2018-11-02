@@ -94,10 +94,10 @@ nosetests tests
 
 ```
 ### Deployment
-Coming soon
+The application is deployed on heroku via [THIS LINK](https://store-manager-herokuapp.herokuapp.com/)
 
 ### Documentation
-Coming soon
+You find the documentation [HERE](https://documenter.getpostman.com/view/5036866/RWgxvvG3)
 
 ### Built with
 
